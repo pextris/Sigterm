@@ -1,0 +1,38 @@
+# NETRUNNER — systemd service
+# Alternative to PM2 — use one or the other, not both
+#
+# Install:
+#   sudo cp netrunner.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable netrunner
+#   sudo systemctl start netrunner
+#
+# Commands:
+#   sudo systemctl status netrunner
+#   sudo systemctl restart netrunner
+#   sudo journalctl -u netrunner -f
+
+[Unit]
+Description=NETRUNNER Game Server
+Documentation=https://github.com/yourhandle/netrunner
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/netrunner
+ExecStart=/usr/bin/node server/index.js
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=netrunner
+Environment=NODE_ENV=production
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

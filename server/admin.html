@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NETRUNNER // ADMIN</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d0d0d;
+      color: #cccccc;
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: #000;
+      border-bottom: 2px solid #00aa00;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-title { color: #55ff55; font-size: 16px; font-weight: 700; letter-spacing: .15em; }
+    .header-sub { color: #555; font-size: 12px; }
+
+    /* Login */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 80vh;
+    }
+    .login-box {
+      border: 1px solid #333; padding: 30px; width: 360px; background: #111;
+    }
+    .login-title { color: #55ff55; font-size: 14px; letter-spacing: .2em; margin-bottom: 20px; }
+    .login-box input {
+      width: 100%; background: #1a1a1a; border: 1px solid #444; color: #55ff55;
+      font-family: inherit; font-size: 14px; padding: 10px; margin-bottom: 12px; outline: none;
+    }
+    .login-box input:focus { border-color: #55ff55; }
+    .login-error { color: #ff5555; font-size: 12px; margin-bottom: 8px; }
+
+    /* Main layout */
+    #admin-screen { display: none; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+    /* Nav tabs */
+    .nav { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 0; }
+    .nav-tab {
+      padding: 8px 16px; background: transparent; border: 1px solid #333;
+      border-bottom: none; color: #777; cursor: pointer;
+      font-family: inherit; font-size: 13px; letter-spacing: .1em;
+      transition: all .1s; margin-bottom: -1px;
+    }
+    .nav-tab:hover { color: #ccc; border-color: #555; }
+    .nav-tab.active { color: #55ff55; border-color: #55ff55; background: #0a1a0a; }
+
+    /* Sections */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* Stats grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat-card { background: #111; border: 1px solid #222; padding: 16px; }
+    .stat-label { font-size: 11px; color: #555; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-value { font-size: 28px; color: #55ff55; font-weight: 700; }
+    .stat-sub { font-size: 11px; color: #555; margin-top: 4px; }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 8px 10px; font-size: 11px; letter-spacing: .15em; color: #555; text-transform: uppercase; border-bottom: 1px solid #333; background: #0a0a0a; }
+    td { padding: 8px 10px; border-bottom: 1px solid #1a1a1a; vertical-align: middle; }
+    tr:hover td { background: #141414; }
+    .banned td { opacity: .5; }
+    .banned td:first-child::after { content: ' [BANNED]'; color: #ff5555; font-size: 11px; }
+
+    /* Badges */
+    .badge { display: inline-block; font-size: 11px; padding: 1px 6px; border: 1px solid; letter-spacing: .1em; }
+    .badge-green { border-color: #55ff55; color: #55ff55; }
+    .badge-red { border-color: #ff5555; color: #ff5555; }
+    .badge-yellow { border-color: #ffff55; color: #ffff55; }
+    .badge-cyan { border-color: #55ffff; color: #55ffff; }
+
+    /* Buttons */
+    button, .btn {
+      font-family: inherit; font-size: 12px; padding: 5px 12px;
+      background: #000; border: 1px solid #444; color: #ccc;
+      cursor: pointer; letter-spacing: .08em; transition: all .1s;
+    }
+    button:hover { border-color: #55ff55; color: #55ff55; }
+    .btn-danger { border-color: #aa0000; color: #ff5555; }
+    .btn-danger:hover { border-color: #ff5555; background: #1a0000; }
+    .btn-primary { border-color: #55ff55; color: #55ff55; }
+    .btn-primary:hover { background: #0a1a0a; }
+    .btn-sm { padding: 3px 8px; font-size: 11px; }
+
+    /* Forms */
+    .form-row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+    .form-row label { color: #777; font-size: 12px; min-width: 80px; }
+    .form-row input, .form-row select, .form-row textarea {
+      background: #1a1a1a; border: 1px solid #333; color: #ccc;
+      font-family: inherit; font-size: 13px; padding: 6px 10px; outline: none;
+    }
+    .form-row input:focus, .form-row textarea:focus { border-color: #55ff55; }
+    .form-row textarea { width: 100%; min-height: 80px; resize: vertical; }
+
+    /* Panel */
+    .panel { background: #111; border: 1px solid #222; padding: 16px; margin-bottom: 16px; }
+    .panel-title { font-size: 12px; letter-spacing: .2em; color: #55ff55; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #222; text-transform: uppercase; }
+
+    /* Messages */
+    .toast { position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background: #0a1a0a; border: 1px solid #55ff55; color: #55ff55; font-size: 13px; z-index: 1000; opacity: 0; transition: opacity .3s; }
+    .toast.show { opacity: 1; }
+    .toast.error { background: #1a0000; border-color: #ff5555; color: #ff5555; }
+
+    /* Search */
+    .search-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .search-row input { flex: 1; background: #1a1a1a; border: 1px solid #333; color: #ccc; font-family: inherit; font-size: 13px; padding: 7px 12px; outline: none; }
+
+    .dim { color: #555; }
+    .uptime { font-family: inherit; }
+
+    /* Chat list */
+    .chat-line { padding: 6px 0; border-bottom: 1px solid #1a1a1a; display: flex; gap: 10px; align-items: baseline; }
+    .chat-line .chat-name { color: #55ff55; min-width: 120px; font-size: 12px; }
+    .chat-line .chat-text { flex: 1; color: #ccc; font-size: 13px; }
+    .chat-line .chat-time { color: #444; font-size: 11px; }
+    .chat-line.system .chat-name { color: #55ffff; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-title">◈ NETRUNNER // ADMIN CONSOLE</div>
+    <div class="header-sub">Server management panel — keep this URL private</div>
+  </div>
+  <div id="server-time" class="dim"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-title">// AUTHENTICATE</div>
+    <div id="login-error" class="login-error" style="display:none"></div>
+    <input type="password" id="password-input" placeholder="Admin password..." autocomplete="off">
+    <button class="btn-primary" style="width:100%;padding:10px" onclick="doLogin()">◈ ACCESS GRANTED</button>
+    <div style="margin-top:10px;font-size:11px;color:#444">Set ADMIN_PASSWORD in server/.env</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-screen">
+  <div class="container">
+
+    <!-- NAV -->
+    <div class="nav">
+      <button class="nav-tab active" onclick="switchTab('stats')">STATS</button>
+      <button class="nav-tab" onclick="switchTab('players')">PLAYERS</button>
+      <button class="nav-tab" onclick="switchTab('economy')">ECONOMY</button>
+      <button class="nav-tab" onclick="switchTab('chat')">CHAT</button>
+      <button class="nav-tab" onclick="switchTab('broadcast')">BROADCAST</button>
+    </div>
+
+    <!-- STATS -->
+    <div id="tab-stats" class="section active">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-label">Loading...</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Server Info</div>
+        <div id="server-info" class="dim">Loading...</div>
+      </div>
+    </div>
+
+    <!-- PLAYERS -->
+    <div id="tab-players" class="section">
+      <div class="panel">
+        <div class="panel-title">All Players</div>
+        <div class="search-row">
+          <input type="text" id="player-search" placeholder="Search by handle..." oninput="filterPlayers()">
+          <button onclick="loadPlayers()">↻ Refresh</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table id="players-table">
+            <thead>
+              <tr>
+                <th>Handle</th><th>Class</th><th>Rank</th><th>Credits</th>
+                <th>Kills</th><th>Streak</th><th>Last Login</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="players-tbody">
+              <tr><td colspan="8" class="dim" style="text-align:center;padding:20px">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ECONOMY -->
+    <div id="tab-economy" class="section">
+      <div class="panel">
+        <div class="panel-title">Give Credits / XP</div>
+        <div class="form-row">
+          <label>Player ID</label>
+          <input type="number" id="give-player-id" placeholder="Player ID..." style="width:120px">
+          <input type="number" id="give-credits" placeholder="Credits..." style="width:120px">
+          <input type="number" id="give-xp" placeholder="XP..." style="width:120px">
+          <button class="btn-primary" onclick="giveResources()">◈ Give</button>
+        </div>
+        <div class="dim" style="font-size:12px">Find player ID in the Players tab. Negative values subtract.</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Remove From Leaderboard</div>
+        <div class="form-row">
+          <label>Handle</label>
+          <input type="text" id="lb-remove-name" placeholder="Handle..." style="width:160px">
+          <input type="text" id="lb-remove-cls" placeholder="Class (netrunner/ghost/bruteforcer)..." style="width:220px">
+          <button class="btn-danger" onclick="removeFromLb()">◆ Remove</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Season Management</div>
+        <div style="margin-bottom:12px;color:#777;font-size:13px">
+          Resetting the season archives the current leaderboard and starts a new one.
+          The previous winner is recorded in the Hall of Fame.
+        </div>
+        <button class="btn-danger" onclick="resetSeason()">⚠ RESET CURRENT SEASON</button>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div id="tab-chat" class="section">
+      <div class="panel">
+        <div class="panel-title">Recent Dead Drop Messages <button class="btn-sm" onclick="loadChat()" style="margin-left:10px">↻</button></div>
+        <div id="chat-list">
+          <div class="dim" style="text-align:center;padding:20px">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BROADCAST -->
+    <div id="tab-broadcast" class="section">
+      <div class="panel">
+        <div class="panel-title">Broadcast to Dead Drop</div>
+        <div style="margin-bottom:12px;color:#777;font-size:13px">
+          Posts a system message to the global Dead Drop chat visible to all players on next load.
+          Appears as <span style="color:#55ffff">[GRID ADMIN]</span>.
+        </div>
+        <div class="form-row" style="flex-direction:column;align-items:flex-start">
+          <textarea id="broadcast-text" placeholder="Type your message to all players..."></textarea>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn-primary" onclick="sendBroadcast()">◈ BROADCAST TO ALL PLAYERS</button>
+          <span id="broadcast-chars" class="dim" style="line-height:2">0 / 280</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Quick Broadcasts</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button onclick="quickBroadcast('// GRID MAINTENANCE: Server will restart in 15 minutes. Jack out now.')">⚠ 15min maintenance warning</button>
+          <button onclick="quickBroadcast('// DOUBLE XP EVENT: All combat XP doubled for the next 24 hours. Get on the grid.')">⚡ Double XP event</button>
+          <button onclick="quickBroadcast('// NEW SEASON: Season reset complete. Leaderboard wiped. The grid is yours again.')">★ New season announcement</button>
+          <button onclick="quickBroadcast('// WARNING: Hostile activity detected. CORP-SEC patrols increased. Watch your back.')">◆ Corp-sec alert (flavor)</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+  let adminPassword = '';
+  let allPlayers = [];
+
+  // ── AUTH ────────────────────────────────────────────────────────────────────
+  document.getElementById('password-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  async function doLogin() {
+    const pw = document.getElementById('password-input').value;
+    if (!pw) return;
+    try {
+      const res = await fetch('/backstage/api/stats', {
+        headers: { 'x-admin-password': pw }
+      });
+      if (res.ok) {
+        adminPassword = pw;
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-screen').style.display = 'block';
+        loadStats();
+        loadPlayers();
+        startClock();
+      } else {
+        document.getElementById('login-error').textContent = '// Access denied. Check your password.';
+        document.getElementById('login-error').style.display = 'block';
+      }
+    } catch {
+      document.getElementById('login-error').textContent = '// Could not reach server.';
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+
+  function api(path, options = {}) {
+    return fetch('/backstage/api' + path, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-password': adminPassword,
+        ...(options.headers || {}),
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    }).then(r => r.json());
+  }
+
+  // ── TABS ────────────────────────────────────────────────────────────────────
+  function switchTab(tab) {
+    document.querySelectorAll('.nav-tab').forEach((t, i) => {
+      t.classList.toggle('active', ['stats','players','economy','chat','broadcast'][i] === tab);
+    });
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    if (tab === 'chat') loadChat();
+  }
+
+  // ── CLOCK ───────────────────────────────────────────────────────────────────
+  function startClock() {
+    const el = document.getElementById('server-time');
+    setInterval(() => {
+      el.textContent = new Date().toLocaleString();
+    }, 1000);
+  }
+
+  // ── STATS ───────────────────────────────────────────────────────────────────
+  async function loadStats() {
+    const data = await api('/stats');
+    const grid = document.getElementById('stats-grid');
+    const cards = [
+      { label: 'Total Players', value: data.totalPlayers, sub: 'registered accounts' },
+      { label: 'Active Today', value: data.activeToday, sub: 'logged in today' },
+      { label: 'Active This Week', value: data.activeWeek, sub: 'last 7 days' },
+      { label: 'Current Season', value: data.currentSeason, sub: 'leaderboard season' },
+      { label: 'Total Messages', value: data.totalMessages, sub: 'dead drop messages' },
+      { label: 'DB Size', value: data.dbSizeKb + ' KB', sub: 'sqlite database' },
+    ];
+    grid.innerHTML = cards.map(c => `
+      <div class="stat-card">
+        <div class="stat-label">${c.label}</div>
+        <div class="stat-value">${c.value}</div>
+        <div class="stat-sub">${c.sub}</div>
+      </div>
+    `).join('');
+
+    const uptime = data.uptime;
+    const h = Math.floor(uptime / 3600);
+    const m = Math.floor((uptime % 3600) / 60);
+    const s = uptime % 60;
+    document.getElementById('server-info').innerHTML = `
+      <div>Node.js: <span style="color:#55ff55">${data.nodeVersion}</span></div>
+      <div>Uptime: <span style="color:#55ff55">${h}h ${m}m ${s}s</span></div>
+      <div>Memory: <span style="color:#55ff55">${data.memoryMb} MB</span></div>
+      <div>Server time: <span style="color:#55ff55">${new Date(data.ts).toLocaleString()}</span></div>
+    `;
+  }
+
+  // ── PLAYERS ─────────────────────────────────────────────────────────────────
+  async function loadPlayers() {
+    allPlayers = await api('/players');
+    renderPlayers(allPlayers);
+  }
+
+  function filterPlayers() {
+    const q = document.getElementById('player-search').value.toLowerCase();
+    renderPlayers(q ? allPlayers.filter(p => p.username.toLowerCase().includes(q)) : allPlayers);
+  }
+
+  function renderPlayers(players) {
+    const clsColors = { netrunner:'#55ff55', ghost:'#ff55ff', bruteforcer:'#ff5555' };
+    const factionColors = { ghost_protocol:'#ff55ff', deadlock:'#ff5555', cipher_syndicate:'#55ffff' };
+    const tbody = document.getElementById('players-tbody');
+    if (!players.length) {
+      tbody.innerHTML = '<tr><td colspan="8" class="dim" style="text-align:center;padding:20px">No players found</td></tr>';
+      return;
+    }
+    tbody.innerHTML = players.map(p => `
+      <tr class="${p.banned ? 'banned' : ''}">
+        <td>
+          <span style="color:${clsColors[p.cls]||'#ccc'}">${p.username}</span>
+          <span class="dim" style="font-size:11px;margin-left:6px">#${p.id}</span>
+          ${p.factionId ? `<span style="color:${factionColors[p.factionId]||'#777'};font-size:11px;margin-left:4px">◈</span>` : ''}
+        </td>
+        <td><span style="color:${clsColors[p.cls]||'#ccc'};font-size:12px">${p.cls}</span></td>
+        <td><span class="badge badge-green">${p.level}</span></td>
+        <td style="color:#ffff55">₡${(p.credits||0).toLocaleString()}</td>
+        <td>${p.kills||0}</td>
+        <td>${p.loginStreak||0}🔥</td>
+        <td class="dim" style="font-size:12px">${p.lastLogin ? new Date(p.lastLogin*1000).toLocaleDateString() : 'never'}</td>
+        <td>
+          <button class="btn-sm" onclick="giveDialog(${p.id},'${p.username}')">Give</button>
+          ${p.banned
+            ? `<button class="btn-sm btn-primary" onclick="unbanPlayer(${p.id},'${p.username}')">Unban</button>`
+            : `<button class="btn-sm btn-danger" onclick="banPlayer(${p.id},'${p.username}')">Ban</button>`
+          }
+          <button class="btn-sm btn-danger" onclick="resetPlayer(${p.id},'${p.username}')">Reset</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function giveDialog(id, name) {
+    document.getElementById('give-player-id').value = id;
+    switchTab('economy');
+    toast(`Selected player: ${name} (ID: ${id})`);
+  }
+
+  async function banPlayer(id, name) {
+    if (!confirm(`Ban ${name}? They won't be able to log in.`)) return;
+    await api(`/players/${id}/ban`, { method: 'POST', body: {} });
+    toast(`${name} banned`);
+    loadPlayers();
+  }
+
+  async function unbanPlayer(id, name) {
+    await api(`/players/${id}/unban`, { method: 'POST', body: {} });
+    toast(`${name} unbanned`);
+    loadPlayers();
+  }
+
+  async function resetPlayer(id, name) {
+    if (!confirm(`Reset ${name}'s save? This deletes their character permanently.`)) return;
+    await api(`/players/${id}/reset`, { method: 'POST', body: {} });
+    toast(`${name} save reset`, true);
+    loadPlayers();
+  }
+
+  // ── ECONOMY ─────────────────────────────────────────────────────────────────
+  async function giveResources() {
+    const id = document.getElementById('give-player-id').value;
+    const credits = parseInt(document.getElementById('give-credits').value) || 0;
+    const xp = parseInt(document.getElementById('give-xp').value) || 0;
+    if (!id) return toast('Enter a player ID', true);
+    const res = await api(`/players/${id}/give`, { method: 'POST', body: { credits, xp } });
+    if (res.ok) toast(`Done. New credits: ₡${res.newCredits}`);
+    else toast(res.error || 'Failed', true);
+  }
+
+  async function removeFromLb() {
+    const name = document.getElementById('lb-remove-name').value.trim();
+    const cls = document.getElementById('lb-remove-cls').value.trim();
+    if (!name || !cls) return toast('Enter handle and class', true);
+    if (!confirm(`Remove ${name} from current leaderboard?`)) return;
+    const res = await api('/leaderboard/remove', { method: 'POST', body: { name, cls } });
+    if (res.ok) toast(`${name} removed from leaderboard`);
+    else toast(res.error || 'Failed', true);
+  }
+
+  async function resetSeason() {
+    if (!confirm('Reset the current season? This archives the leaderboard and starts Season N+1.')) return;
+    const res = await api('/leaderboard/reset-season', { method: 'POST', body: {} });
+    if (res.ok) toast(`Season reset. New season: ${res.newSeason}. Previous winner: ${res.previousWinner}`);
+    else toast(res.error || 'Failed', true);
+    loadStats();
+  }
+
+  // ── CHAT ────────────────────────────────────────────────────────────────────
+  async function loadChat() {
+    const messages = await api('/chat/recent');
+    const list = document.getElementById('chat-list');
+    if (!messages.length) {
+      list.innerHTML = '<div class="dim" style="text-align:center;padding:20px">No messages</div>';
+      return;
+    }
+    list.innerHTML = messages.map(m => `
+      <div class="chat-line ${m.type === 'system' ? 'system' : ''}">
+        <span class="chat-name">${m.name || 'GRID'}</span>
+        <span class="chat-text">${escHtml(m.text)}</span>
+        <span class="chat-time">${new Date(m.created_at*1000).toLocaleTimeString()}</span>
+        <button class="btn-sm btn-danger" onclick="deleteMsg(${m.id})">✕</button>
+      </div>
+    `).join('');
+  }
+
+  async function deleteMsg(id) {
+    await api(`/chat/${id}`, { method: 'DELETE' });
+    toast('Message deleted');
+    loadChat();
+  }
+
+  // ── BROADCAST ───────────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const ta = document.getElementById('broadcast-text');
+    if (ta) {
+      ta.addEventListener('input', () => {
+        document.getElementById('broadcast-chars').textContent = `${ta.value.length} / 280`;
+      });
+    }
+  });
+
+  async function sendBroadcast() {
+    const text = document.getElementById('broadcast-text').value.trim();
+    if (!text) return toast('Enter a message', true);
+    if (!confirm(`Broadcast to all players: "${text.slice(0, 60)}..."`)) return;
+    const res = await api('/broadcast', { method: 'POST', body: { text } });
+    if (res.ok) {
+      toast('Broadcast sent to Dead Drop');
+      document.getElementById('broadcast-text').value = '';
+    } else toast(res.error || 'Failed', true);
+  }
+
+  function quickBroadcast(text) {
+    document.getElementById('broadcast-text').value = text;
+    document.getElementById('broadcast-chars').textContent = `${text.length} / 280`;
+    switchTab('broadcast');
+  }
+
+  // ── UTILS ───────────────────────────────────────────────────────────────────
+  function toast(msg, isError = false) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show' + (isError ? ' error' : '');
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  function escHtml(str) {
+    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>

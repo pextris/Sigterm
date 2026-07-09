@@ -1,0 +1,8 @@
+node_modules/
+.env
+*.db
+*.sqlite
+backups/
+dist/
+server/public/
+client/dist/
