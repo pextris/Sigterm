@@ -1,14 +1,14 @@
-#!/bin/bash
+c#!/bin/bash
 
 # SIGTERM NODE INSTALLER
 # They built the grid. We own it.
 
-GREEN='[0;32m'
-CYAN='[0;36m'
-RED='[0;31m'
-DIM='[2m'
-BOLD='[1m'
-NC='[0m'
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+RED='\033[0;31m'
+DIM='\033[2m'
+BOLD='\033[1m'
+NC='\033[0m'
 
 clear
 
