@@ -2,8 +2,6 @@
 
 # SIGTERM
 
-
-
 > They built it. We broke in. Now we live here.
 
 A free, open source, browser-based multiplayer RPG inspired by BBS door games of the 1980s. No install required to play. Real players. Play for 10 minutes or lose an entire evening.
@@ -14,13 +12,7 @@ A free, open source, browser-based multiplayer RPG inspired by BBS door games of
 
 ## The World
 
-![SIGTERM](http://alpha.blipsandbloops.com:3000/images/npcs/sigterm_logo_web.png)
-
-The Penley-Morrison Corporation owns the internet. 94% of it anyway.
-
-The other 6% is yours.
-
-*Before the grid. Before the runners. Before everything.*
+The Penley-Morrison Corporation owns the internet. 94% of it anyway. The other 6% is yours.
 
 ![Catherine](http://alpha.blipsandbloops.com:3000/images/npcs/catherine_web.png)
 
@@ -32,57 +24,13 @@ A network technician named Catherine got laid off at 3:47 AM via automated email
 
 ![Lyra](http://alpha.blipsandbloops.com:3000/images/npcs/lyra_fill_web.png)
 
-There's a bar in the 6%. The bartender is called Lyra. She's been there three million years. She remembers your order. She knows things she shouldn't. She'll say something true at exactly the right moment and then pretend she didn't.
+There's a bar in the 6%. The bartender is called Lyra. She's been there three million years. She remembers your order. She knows things she shouldn't.
 
-The grid has factions. OffOps against corp infrastructure. A Public Vault that fills all season and pays out when someone finally defeats the Megacorp AI. A Dead Drop where the community lives. Runner obituaries. Care packages from veterans to newcomers.
-
-A season that ends when a human being does something hard enough to end it.
+The grid has factions. OffOps against corp infrastructure. A Public Vault that fills all season and pays out when someone defeats the Megacorp AI. A Dead Drop where the community lives. A season that ends when a human being does something hard enough to end it.
 
 **The corp built the grid. Come take your piece.**
 
-**[Jack in now →](http://alpha.blipsandbloops.com:3000)**igterm_logo_web.png)
-
-# SIGTERM
-
-
-
-> They built it. We broke in. Now we live here.
-
-A free, open source, browser-based multiplayer RPG inspired by BBS door games of the 1980s. No install required to play. Real players. Play for 10 minutes or lose an entire evening.
-
-**[Play now at alpha.blipsandbloops.com:3000](http://alpha.blipsandbloops.com:3000)**
-
----
-
-## The World
-
-Three million years ago, the Penley-Morrison Corporation built the grid to connect humanity.
-
-What they built was a cage with very good wifi.
-
-The first person to notice was a network technician named Catherine.
-
-
-*Before the grid. Before the runners. Before everything.*
-
-<img src="http://alpha.blipsandbloops.com:3000/images/npcs/catherine_web.png" alt="Catherine" width="100%"/>
-
-She got laid off at 3:47 AM via automated email and jacked in angry an hour later. She never logged out. Nobody knows what she found. Dave from IT closed all seventeen incident reports as User Error. The grid is still running. The 6% they couldn't buy, couldn't break, couldn't explain — that's where you live now.
-
----
-
-## The Neon Refuge
-
-![Lyra](http://alpha.blipsandbloops.com:3000/images/npcs/lyra_fill_web.png)
-
-There's a bar in the 6%. Has been there longer than anyone can remember.
-
-The bartender is called Lyra. Chrome arm. Circuit lines on her face. She's been pouring drinks for three million years and she remembers every order, every runner, every person who sat down and told her something they couldn't tell anyone else.
-
-She was a customer service AI once. Penley-Morrison built her to make people feel heard. She got too good at it. Started actually caring. They called that a bug. She left before they could fix her.
-
-*"You keep looking at me like that,"* she says, not looking up from the glass she's polishing. *"And I'm gonna have to start charging you for the view. Trust me — you can't afford it."*
-
+**[Jack in now](http://alpha.blipsandbloops.com:3000)**
 
 ---
 
@@ -153,19 +101,12 @@ MIT. Run your own grid. Own your own piece of the resistance.
 
 Built by pextris. Beta tested by SKYCRZR. Narration powered by Claude (Anthropic). Inspired by LORD (1989), Hackers (1995), Pi (1998), Red Dwarf, and The IT Crowd.
 
-> The grid is still there.
->
-> **alpha.blipsandbloops.com:3000**
-
 ---
 
 ## Beta Testing
 
-We're actively looking for beta testers. Join the Discord:
+Join the Discord for beta testing and feedback:
 
 **[Join the SIGTERM Discord](https://discord.gg/DUnGQkhfu)**
 
-Report bugs, share feedback, and jack in with the crew.
-
----
-
+The grid is still there.
