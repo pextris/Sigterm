@@ -18,7 +18,6 @@ The Penley-Morrison Corporation controls 94% of global network infrastructure. T
 
 The first runner was named Yael. She jacked in angry at 4:15 AM and never logged out. Nobody knows what she found. The Megacorp AI has been looking for her signal every 0.003 seconds for three million years. Dave from IT closed all the tickets about it as User Error.
 
-![The Neon Refuge](http://alpha.blipsandbloops.com:3000/images/npcs/static_web.png)
 
 ---
 
