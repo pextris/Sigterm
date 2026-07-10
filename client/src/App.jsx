@@ -2900,7 +2900,7 @@ function RunnersPanel({ player, onViewProfile }) {
   return (
     <div>
       <div style={{fontSize:12,color:"#555",marginBottom:8}}>{runners.length} runners registered</div>
-      <div className="lb-header"><div>#</div><div>RUNNER</div><div style={{textAlign:"right"}}>LEVEL</div><div style={{textAlign:"right"}}>KILLS</div><div style={{textAlign:"right"}}>CREDITS</div></div>
+      <div className="lb-header"><div>#</div><div>RUNNER</div><div style={{textAlign:"right"}}>LVL</div><div style={{textAlign:"right"}}>KILLS</div><div style={{textAlign:"right"}}>XP</div><div style={{textAlign:"right"}}>₡</div></div>
       {pageRunners.map((r,i) => {
         const cls = CLASSES[r.cls];
         const isYou = r.name === player.name;
@@ -2910,6 +2910,7 @@ function RunnersPanel({ player, onViewProfile }) {
             <div className="lb-name clickable-name" style={{color:isYou?"#fff":cls?.color}} onClick={()=>onViewProfile(r.name,r.cls)}>{cls?.icon} {r.name}{isYou?" (you)":""}</div>
             <div className="lb-val">{r.level}</div>
             <div className="lb-val">{r.kills||0}</div>
+            <div className="lb-val" style={{color:"#55ffff"}}>{r.xp||0}</div>
             <div className="lb-val" style={{color:"#ffff55"}}>&#8353;{r.credits||0}</div>
           </div>
         );
@@ -6529,6 +6530,50 @@ export default function Netrunner() {
             )}
           </div>
         )}
+
+        {/* LEADERBOARD TAB */}
+        {refugeTab === "leaderboard" && (
+          <div>
+            <div className="dim mb-8">Current season standings. <span style={{cursor:"pointer",color:"#55ff55",fontSize:11}} onClick={fetchLeaderboard}>↻ REFRESH</span></div>
+            {lbLoading && <div className="dim" style={{padding:20,textAlign:"center"}}>//  Loading...</div>}
+            {!lbLoading && !lbData && <div className="dim" style={{padding:20,textAlign:"center"}}>// <span style={{color:"#55ff55",cursor:"pointer"}} onClick={fetchLeaderboard}>Click to load leaderboard</span></div>}
+            {!lbLoading && lbData && lbData.entries?.length === 0 && <div className="dim" style={{padding:20,textAlign:"center"}}>// No runners yet. Play a grid run to appear.</div>}
+            {!lbLoading && lbData && lbData.entries?.length > 0 && (
+              <>
+                <div className="lb-header">
+                  <div>#</div><div>RUNNER</div>
+                  <div style={{textAlign:"right"}}>SCORE</div>
+                  <div style={{textAlign:"right"}}>LEVEL</div>
+                  <div style={{textAlign:"right"}}>KILLS</div>
+                </div>
+                {lbData.entries.map((e,i) => {
+                  const isYou = e.name === player.name && e.cls === player.cls;
+                  const cls = CLASSES[e.cls];
+                  const rowCls = isYou ? "lb-row you" : i===0?"lb-row gold":i===1?"lb-row silver":i===2?"lb-row bronze":"lb-row";
+                  return (
+                    <div key={i} className={rowCls}>
+                      <div className="lb-rank">{i<3?MEDALS[i]:i+1}</div>
+                      <div className="lb-name clickable-name" style={{color:isYou?"#fff":cls?.color}} onClick={()=>viewProfile(e.name,e.cls)}>
+                        {cls?.icon} {e.name}{isYou?" (you)":""}{e.bossDefeated?" ★":""}
+                      </div>
+                      <div className="lb-val">{((e.bossDefeated?100000:0)+(e.level||1)*5000+(e.kills||0)*200+(e.credits||0))}</div>
+                      <div className="lb-val">{e.level}</div>
+                      <div className="lb-val">{e.kills}</div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* RUNNERS TAB */}
+        {refugeTab === "runners" && (
+          <div>
+            <RunnersPanel player={player} onViewProfile={viewProfile} />
+          </div>
+        )}
+
       </div>
     );
   };
@@ -6929,7 +6974,7 @@ export default function Netrunner() {
                         onClick={() => viewProfile(e.name, e.cls)}>
                         {cls?.icon} {e.name}{isYou?" (you)":""}{e.bossDefeated?" ★":""}
                       </div>
-                      <div className="lb-val" style={{color:"#cccccc"}}>{scoreValue(e).toLocaleString()}</div>
+                      <div className="lb-val" style={{color:"#cccccc"}}>{((e.bossDefeated?100000:0)+(e.level||1)*5000+(e.kills||0)*200+(e.credits||0))}</div>
                       <div className="lb-val">{e.level}</div>
                       <div className="lb-val">{e.kills}</div>
                       <div className="lb-val" style={{color:"#ffff55"}}>₡{e.credits}</div>
@@ -6968,6 +7013,7 @@ export default function Netrunner() {
       {/* LEADERBOARD TAB */}
         {refugeTab === "leaderboard" && (
           <div>
+            <div style={{color:"#55ff55",padding:20}}>// LEADERBOARD TAB ACTIVE</div>
             <div className="dim mb-8">Current season standings. <span style={{cursor:"pointer",color:"#55ff55",fontSize:11}} onClick={fetchLeaderboard}>↻ REFRESH</span></div>
             {lbLoading && <div className="dim" style={{padding:20,textAlign:"center"}}>//  Loading...</div>}
             {!lbLoading && lbData && (
