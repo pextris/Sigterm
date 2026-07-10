@@ -63,9 +63,12 @@ There's a bar in the 6%. The bartender is called Lyra. She's been there three mi
 
 ## Quick Install
 
-   git clone https://github.com/pextris/Sigterm.git
-   cd Sigterm
-   bash install.sh
+
+```bash
+git clone https://github.com/pextris/Sigterm.git
+cd Sigterm
+bash install.sh
+```
 
 The installer asks your node name, port, Anthropic API key (optional), and admin password. That is it. Your node is live.
 
