@@ -1,10 +1,24 @@
 # SIGTERM
 
+![SIGTERM](http://alpha.blipsandbloops.com:3000/images/npcs/lyra_fill_web.png)
+
 > They built it. We broke in. Now we live here.
 
 A free, open source, browser-based multiplayer RPG inspired by BBS door games of the 1980s. No install required to play. Real players. Play for 10 minutes or lose an entire evening.
 
-Play now at: sigterm.blipsandbloops.com
+**[Play now at alpha.blipsandbloops.com:3000](http://alpha.blipsandbloops.com:3000)**
+
+---
+
+## The World
+
+The Penley-Morrison Corporation controls 94% of global network infrastructure. The other 6% belongs to the runners. You are one of them.
+
+The first runner was named Yael. She jacked in angry at 4:15 AM and never logged out. Nobody knows what she found. The Megacorp AI has been looking for her signal every 0.003 seconds for three million years. Dave from IT closed all the tickets about it as User Error.
+
+![The Neon Refuge](http://alpha.blipsandbloops.com:3000/images/npcs/static_web.png)
+
+---
 
 ## Quick Install
 
@@ -12,11 +26,21 @@ Play now at: sigterm.blipsandbloops.com
     cd Sigterm
     bash install.sh
 
-The installer will ask you your node name, port, Anthropic API key (optional), and admin password. That is it. Your node is live.
+The installer asks your node name, port, Anthropic API key (optional), and admin password. That is it. Your node is live.
+
+---
+
+## The Stack
+
+- Backend: Node.js, Express
+- Database: SQLite via better-sqlite3
+- Frontend: React (Vite)
+- Process manager: PM2
+- Auth: JWT
+
+---
 
 ## Manual Install
-
-Requirements: Node.js 18+, npm, PM2 (npm install -g pm2)
 
     git clone https://github.com/pextris/Sigterm.git
     cd Sigterm
@@ -35,28 +59,7 @@ Requirements: Node.js 18+, npm, PM2 (npm install -g pm2)
     ADMIN_PASSWORD=your_admin_password
     NODE_ENV=production
 
-## The Stack
-
-- Backend: Node.js, Express
-- Database: SQLite via better-sqlite3
-- Frontend: React (Vite)
-- Process manager: PM2
-- Auth: JWT
-
-## Deploy Updates
-
-    cd Sigterm
-    git pull
-    cd client && npm run build && cd ..
-    pm2 restart sigterm
-
-## Admin Panel
-
-Visit /backstage on your running node. Password protected via ADMIN_PASSWORD.
-
-## The Lore
-
-The first runner was named Yael. She got laid off at 3:47 AM via automated email and jacked into the grid an hour later. She never logged out. Nobody knows what she found. The Megacorp AI has been looking for her signal every 0.003 seconds for three million years. Dave from IT closed all the tickets about it as User Error. The grid is still running. Come take your piece.
+---
 
 ## Roadmap
 
@@ -66,16 +69,24 @@ v1.4 The Network - Planned
 v1.5 The BBS - Planned (SKYCRZR said so)
 v1.6 Public Launch - Planned
 
+---
+
 ## Contributing
 
 Bug reports, feature requests, pull requests all welcome. Open an issue first. ANSI artists and BBS sysops especially needed.
+
+---
 
 ## License
 
 MIT. Run your own grid. Own your own piece of the resistance.
 
+---
+
 ## Credits
 
 Built by pextris. Beta tested by SKYCRZR. Narration powered by Claude (Anthropic). Inspired by LORD (1989), Hackers (1995), Pi (1998), Red Dwarf, and The IT Crowd.
 
-The grid is still there. sigterm.blipsandbloops.com
+> The grid is still there.
+>
+> **alpha.blipsandbloops.com:3000**
