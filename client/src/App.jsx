@@ -2927,6 +2927,68 @@ function RunnersPanel({ player, onViewProfile }) {
   );
 }
 
+function TitleFeed() {
+  const [items, setItems] = React.useState([]);
+  const [current, setCurrent] = React.useState(0);
+
+  React.useEffect(() => {
+    // Fetch recent activity
+    fetch('/api/activity')
+      .then(r => r.json())
+      .then(data => {
+        const feed = (data || []).slice(0, 10).map(a => a.text || a.message || '');
+        // Add static flavor items
+        const flavor = [
+          '// The grid never sleeps.',
+          '// Static is broadcasting.',
+          '// The Public Vault is filling.',
+          '// Corp Sentries are watching.',
+          '// Someone is close to the Megacorp AI.',
+          '// The 6% holds.',
+        ];
+        setItems([...feed.filter(Boolean), ...flavor]);
+      })
+      .catch(() => {
+        setItems([
+          '// The grid never sleeps.',
+          '// Static is broadcasting.',
+          '// The Public Vault is filling.',
+          '// Corp Sentries are watching.',
+          '// The 6% holds.',
+        ]);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    if (items.length === 0) return;
+    const interval = setInterval(() => {
+      setCurrent(c => (c + 1) % items.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [items]);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div style={{
+      height: 28,
+      marginBottom: 12,
+      overflow: "hidden",
+      textAlign: "center",
+    }}>
+      <div style={{
+        fontSize: 11,
+        color: "#2a5a2a",
+        letterSpacing: ".12em",
+        fontStyle: "italic",
+        transition: "opacity 0.5s",
+      }}>
+        {items[current]}
+      </div>
+    </div>
+  );
+}
+
 export default function Netrunner() {
   const [screen, setScreen] = useState("title");
   const [authMode, setAuthMode] = useState("login"); // "login" | "register"
@@ -4531,6 +4593,9 @@ export default function Netrunner() {
 
       {/* Separator */}
       <div style={{color:"#1a1a1a",marginBottom:16}}>{"━".repeat(52)}</div>
+
+      {/* Live activity feed */}
+      <TitleFeed />
 
       {/* Live stats */}
       <div style={{color:"#333",fontSize:11,letterSpacing:".12em",lineHeight:2}}>
