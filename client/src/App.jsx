@@ -419,10 +419,13 @@ async function saveProfileData(player) {
 
 async function loadProfileMessages(name, cls) {
   try {
-    const key = `${PROFILE_MSGS_KEY}_${name}_${cls}`;
-    const r = await window.storage.get(key, true);
-    return r ? JSON.parse(r.value) : [];
-  } catch { return []; }
+    const res = await fetch(`/api/profiles/${encodeURIComponent(name)}`);
+    if (res.ok) {
+      const data = await res.json();
+      return data.profileMessages || [];
+    }
+  } catch {}
+  return [];
 }
 
 async function postProfileMessage(targetName, targetCls, fromPlayer, text) {
@@ -4213,6 +4216,31 @@ export default function Netrunner() {
     }
   };
 
+  const handleSendProfileMsg = async () => {
+    if (!profileMsgInput?.trim() || !profileTarget) return;
+    try {
+      const token = localStorage.getItem("netrunner_token");
+      const res = await fetch(`/api/profiles/${encodeURIComponent(profileTarget.name)}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          from: player.name,
+          fromCls: player.cls,
+          fromLevel: player.level,
+          text: profileMsgInput.trim(),
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setProfileMsgs(data.messages || []);
+        setProfileMsgInput("");
+      }
+    } catch(e) { console.error(e); }
+  };
+
   const closeProfile = () => {
     setProfileTarget(null);
     setProfileData(null);
@@ -6344,8 +6372,11 @@ export default function Netrunner() {
         {/* LYRA */}
         {refugeTab === "bar" && (
           <div>
+            {/* Lyra full image */}
+            <img src="/images/npcs/lyra_fill_web.png" alt="The Neon Refuge"
+              style={{width:"100%",maxHeight:280,objectFit:"cover",borderRadius:4,marginBottom:12}} />
             <div className="npc-row">
-              <div className="npc-avatar" style={{borderColor:"#ff55ff",background:"rgba(255,121,198,.08)"}}>💋</div>
+              <div className="npc-avatar" style={{borderColor:"#ff55ff",background:"rgba(255,121,198,.08)",padding:0,overflow:"hidden"}}><img src="/images/npcs/lyra_avatar_small.png" alt="Lyra" style={{width:"100%",height:"100%",objectFit:"cover"}} /></div>
               <div className="npc-info">
                 <div className="npc-name" style={{color:"#ff55ff"}}>LYRA</div>
                 <div className="npc-tagline">
