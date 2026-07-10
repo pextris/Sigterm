@@ -91,3 +91,13 @@ Built by pextris. Beta tested by SKYCRZR. Narration powered by Claude (Anthropic
 > The grid is still there.
 >
 > **alpha.blipsandbloops.com:3000**
+
+---
+
+## Beta Testing
+
+We're actively looking for beta testers. Join the Discord:
+
+**[Join the SIGTERM Discord](https://discord.gg/DUnGQkhfu)**
+
+Report bugs, share feedback, and jack in with the crew.
