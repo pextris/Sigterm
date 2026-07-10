@@ -83,22 +83,28 @@ The installer asks your node name, port, Anthropic API key (optional), and admin
 
 ## Manual Install
 
-   git clone https://github.com/pextris/Sigterm.git
-   cd Sigterm
-   npm install
-   cd client && npm install && npm run build && cd ..
-   cp .env.example .env
-   pm2 start server/index.js --name sigterm
-   pm2 save
+
+```bash
+git clone https://github.com/pextris/Sigterm.git
+cd Sigterm
+npm install
+cd client && npm install && npm run build && cd ..
+cp .env.example .env
+pm2 start server/index.js --name sigterm
+pm2 save
+```
 
 ## Environment Variables
 
-   NODE_NAME=YOUR-NODE-NAME
-   PORT=3000
-   JWT_SECRET=your_secret_here
-   ANTHROPIC_API_KEY=your_key_here
-   ADMIN_PASSWORD=your_admin_password
-   NODE_ENV=production
+
+```
+NODE_NAME=YOUR-NODE-NAME
+PORT=3000
+JWT_SECRET=your_secret_here
+ANTHROPIC_API_KEY=your_key_here
+ADMIN_PASSWORD=your_admin_password
+NODE_ENV=production
+```
 
 ---
 
