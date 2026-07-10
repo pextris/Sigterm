@@ -3299,6 +3299,7 @@ export default function Netrunner() {
       }
       const data = await login(authHandle.trim(), authPassword);
       if (data.error) { setAuthError(`// ${data.error}`); setAuthLoading(false); return; }
+      if (data.token) { localStorage.setItem("netrunner_token", data.token); }
       if (data.player) {
         const p = data.player;
         // Run daily reset
@@ -3691,7 +3692,7 @@ export default function Netrunner() {
     const log = [...combatLog];
     const { p, e, log: newLog, outcome, leveled } = resolveCombatRound({ ...player }, { ...enemy }, log);
     setCombatLog(newLog); save(p);
-    if (outcome !== "ongoing") { setEnemy(null); await handleCombatEnd(outcome, p, enemy, leveled); return; }
+    if (outcome !== "ongoing") { setEnemy(null); await handleCombatEnd(outcome, p, enemy, leveled, [...combatLog, ...newLog]); return; }
     setEnemy(e);
     await narrate(`${p.name} fights ${e.name}, now at ${p.hp}/${p.maxHp} HP. Narrate this exchange in 2 terse sentences.`);
   };
@@ -3705,12 +3706,12 @@ export default function Netrunner() {
     // Quest: abilityUses
     p = trackQuest(p, "abilityUses", 1);
     setCombatLog(newLog); save(p);
-    if (outcome !== "ongoing") { setEnemy(null); await handleCombatEnd(outcome, p, enemy, leveled); return; }
+    if (outcome !== "ongoing") { setEnemy(null); await handleCombatEnd(outcome, p, enemy, leveled, [...combatLog, ...newLog]); return; }
     setEnemy(e);
     await narrate(`${p.name} unleashes ${cls.ability.name} against ${e.name}. Narrate this moment in 2 cinematic sentences.`);
   };
 
-  const handleCombatEnd = async (outcome, p, lastEnemy, leveled) => {
+  const handleCombatEnd = async (outcome, p, lastEnemy, leveled, fullLog = []) => {
     // Quest: runs
     p = trackQuest(p, "runs", 1);
     // Faction XP contribution (async, non-blocking)
@@ -3719,13 +3720,30 @@ export default function Netrunner() {
       p = unlockAchievements(p, { lowHpWin: p.hp < p.maxHp * 0.05 });
       save(p);
       triggerGlitch();
+      // Calculate stats from full combat log
+      const calcDmgDealt = fullLog.reduce((a, l) => {
+        if (l.type === "hit" || l.type === "crit") {
+          const m = l.text.match(/\[(?:ATK|CRIT)[^\]]*\] (\d+) dmg/);
+          return a + (m ? parseInt(m[1]) : 0);
+        }
+        return a;
+      }, 0);
+      const calcDmgTaken = fullLog.reduce((a, l) => {
+        if (l.type === "dmg") {
+          const m = l.text.match(/Counter-strike: (\d+) dmg/);
+          return a + (m ? parseInt(m[1]) : 0);
+        }
+        return a;
+      }, 0);
+      const calcRounds = fullLog.filter(l => l.type === "hit" || l.type === "crit").length;
+      const calcCrits = fullLog.filter(l => l.type === "crit" && !l.text.includes("CASCADE")).length;
       const killNarration = await getNarration(`${p.name} just flatlined the ${lastEnemy.name}${lastEnemy.boss ? " — the Megacorp AI itself" : ""}. Describe the victory in 2 punchy sentences.`);
       setKillScreen({
         enemy: lastEnemy,
-        dmgDealt: combatStats.dmgDealt,
-        dmgTaken: combatStats.dmgTaken,
-        rounds: combatStats.rounds,
-        crits: combatStats.crits,
+        dmgDealt: calcDmgDealt,
+        dmgTaken: calcDmgTaken,
+        rounds: calcRounds,
+        crits: calcCrits,
         loot: p.credits - (player.credits || 0),
         narration: killNarration,
         leveled,
