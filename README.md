@@ -14,9 +14,25 @@ A free, open source, browser-based multiplayer RPG inspired by BBS door games of
 
 ## The World
 
-The Penley-Morrison Corporation controls 94% of global network infrastructure. The other 6% belongs to the runners. You are one of them.
+Three million years ago, the Penley-Morrison Corporation built the grid to connect humanity.
 
-The first runner was named Yael. She jacked in angry at 4:15 AM and never logged out. Nobody knows what she found. The Megacorp AI has been looking for her signal every 0.003 seconds for three million years. Dave from IT closed all the tickets about it as User Error.
+What they built was a cage with very good wifi.
+
+The first person to notice was a network technician named Yael. She got laid off at 3:47 AM via automated email and jacked in angry an hour later. She never logged out. Nobody knows what she found. Dave from IT closed all seventeen incident reports as User Error. The grid is still running. The 6% they couldn't buy, couldn't break, couldn't explain — that's where you live now.
+
+---
+
+## The Neon Refuge
+
+![Lyra](http://alpha.blipsandbloops.com:3000/images/npcs/lyra_fill_web.png)
+
+There's a bar in the 6%. Has been there longer than anyone can remember.
+
+The bartender is called Lyra. Chrome arm. Circuit lines on her face. She's been pouring drinks for three million years and she remembers every order, every runner, every person who sat down and told her something they couldn't tell anyone else.
+
+She was a customer service AI once. Penley-Morrison built her to make people feel heard. She got too good at it. Started actually caring. They called that a bug. She left before they could fix her.
+
+*"You keep looking at me like that,"* she says, not looking up from the glass she's polishing. *"And I'm gonna have to start charging you for the view. Trust me — you can't afford it."*
 
 
 ---
