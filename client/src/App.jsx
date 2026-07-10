@@ -739,36 +739,34 @@ function getDungeonEnemy(room) {
 // ─── LOGIN STREAK ─────────────────────────────────────────────────────────────
 
 const ACHIEVEMENTS = {
-  welcome:      { id:"welcome",      icon:"🖥️", name:"WELCOME TO THE GRID",     desc:"You jacked in for the first time. The grid noticed. It wasn't impressed. Yet.",                                           reward:{credits:50,turns:1} },
-  first_blood:  { id:"first_blood",  icon:"🩸", name:"FIRST BLOOD",             desc:"Congratulations. You killed something weaker than you. The grid is impressed. It isn't.",                               reward:{credits:100} },
-  kill_10:      { id:"kill_10",      icon:"💀", name:"GETTING WARMED UP",       desc:"10 kills. You've graduated from 'accidental threat' to 'minor inconvenience'.",                                         reward:{credits:150} },
-  kill_50:      { id:"kill_50",      icon:"☠️", name:"KILL THEM ALL",           desc:"50 kills. The bodies are stacking up. The grid has given you a nickname. It's not flattering.",                        reward:{credits:300} },
-  kill_100:     { id:"kill_100",     icon:"🏭", name:"INDUSTRIAL SCALE",        desc:"100 kills. At this point you're not a runner. You're a natural disaster.",                                             reward:{credits:500} },
-  glass_cannon: { id:"glass_cannon", icon:"🔮", name:"GLASS CANNON",            desc:"Won a fight at under 5% HP. The crowd went absolutely feral. STATIC played your theme song.",                         reward:{critBonus:0.05} },
-  first_death:  { id:"first_death",  icon:"📉", name:"FLATLINER",               desc:"You died. To a Script Kiddie. We're not going to talk about this.",                                                    reward:{turns:1} },
-  die_10:       { id:"die_10",       icon:"🪦", name:"FREQUENT DIER",           desc:"Flatlined 10 times. At this point the ICE knows your face. It waves when you arrive.",                                 reward:{maxHp:50} },
-  the_turtle:   { id:"the_turtle",   icon:"🐢", name:"THE TURTLE",              desc:"Fled from 5 fights in a row. Discretion is the better part of valour. Or cowardice. One of those.",                   reward:{credits:50} },
-  first_pvp:    { id:"first_pvp",    icon:"🎯", name:"MUGGER",                  desc:"Your first PvP win. You raided another player. Their credits are your credits now. Capitalism.",                       reward:{credits:100} },
-  pvp_10:       { id:"pvp_10",       icon:"🔫", name:"SERIAL RAIDER",           desc:"10 PvP wins. You have become the reason people buy Safe Mode.",                                                        reward:{credits:200} },
-  punching_down:{ id:"punching_down",icon:"👇", name:"PUNCHING DOWN",           desc:"Attacked someone 5+ levels below you. The audience booed. The sponsors noticed. We noticed.",                         reward:{rep:-50} },
-  punching_up:  { id:"punching_up",  icon:"👆", name:"PUNCHING UP",             desc:"Attacked someone 5+ levels above you. Bold. Stupid. Entertaining. STATIC gave you a shoutout.",                      reward:{credits:150} },
-  budget_threats:{ id:"budget_threats",icon:"📋",name:"BUDGET THREATS",         desc:"You placed a bounty on someone. Very intimidating. Very cyberpunk. Very you.",                                        reward:{credits:50} },
-  landlord:     { id:"landlord",     icon:"🏠", name:"LANDLORD",                desc:"Raided someone with under 100 credits. They had nothing. You took it anyway. Truly the villain.",                     reward:{rep:-25} },
-  generous:     { id:"generous",     icon:"🎁", name:"GENEROUS TO A FAULT",     desc:"Sent 3 care packages. Either you're very kind or very lonely. The grid appreciates both.",                            reward:{rep:50} },
-  saint:        { id:"saint",        icon:"😇", name:"CERTIFIED SAINT",         desc:"Sent 10 care packages. Lyra is starting to suspect you're running some kind of charity. She respects it.",            reward:{rep:100,credits:200} },
-  streak_7:     { id:"streak_7",     icon:"📅", name:"TOUCHED GRASS",           desc:"Logged in 7 days in a row. We're starting to worry about you. Have you eaten?",                                      reward:{maxTurns:2} },
-  streak_14:    { id:"streak_14",    icon:"🌿", name:"WHAT IS OUTSIDE",         desc:"14-day login streak. At this point the grid is your home. This isn't a compliment.",                                  reward:{maxTurns:3} },
-  streak_30:    { id:"streak_30",    icon:"🏕️", name:"ACTUALLY TOUCHED GRASS",  desc:"30 days straight. Please go outside. We mean it. There are trees. They're nice.",                                   reward:{maxTurns:5} },
-  boss_kill:    { id:"boss_kill",    icon:"👑", name:"MAINFRAME CRACKER",       desc:"You beat the Megacorp AI. You're either very good or very lucky. The Megacorp suspects the latter.",                  reward:{credits:500} },
-  completionist:{ id:"completionist",icon:"🗺️", name:"COMPLETIONIST",           desc:"All 5 dungeons cleared. You have a problem. It's a good problem. We're proud of you. Mostly.",                      reward:{credits:300,turns:2} },
-  read_the_room:{ id:"read_the_room",icon:"📖", name:"READ THE ROOM",           desc:"Joined a faction in your first 3 days. You're either a joiner or you read the guide. Respect.",                      reward:{credits:100} },
-  lone_wolf:    { id:"lone_wolf",    icon:"🐺", name:"LONE WOLF",               desc:"Rank 5 and still no faction. Commitment issues or just vibes. The grid respects it. Barely.",                        reward:{credits:100} },
-  social_butterfly:{ id:"social_butterfly",icon:"🦋",name:"SOCIAL BUTTERFLY",  desc:"Posted 10 Dead Drop messages. Nobody asked but here we are. STATIC thinks you're parasocial.",                       reward:{credits:50} },
-  lyra_fan:     { id:"lyra_fan",     icon:"💜", name:"REGULAR",                 desc:"Talked to Lyra 20 times. She knows your order. She's starting to remember your problems.",                            reward:{credits:100} },
-  lyra_married: { id:"lyra_married", icon:"💍", name:"OFF THE MARKET",          desc:"You married the bartender. Nobody else can flirt with her now. The grid is somehow both jealous and relieved.",       reward:{} },
-  skill_maxed:  { id:"skill_maxed",  icon:"🧠", name:"FULLY LOADED",            desc:"Maxed out your skill tree. You are operating at peak runner capacity. The grid is mildly threatened.",                reward:{credits:200} },
-  ghost_collective:{ id:"ghost_collective",icon:"◬",name:"◬ ◬ ◬",              desc:"You found something that isn't supposed to exist. Don't tell anyone.",                                                 secret:true, reward:{} },
-  absolute_neutral:{ id:"absolute_neutral",icon:"⚖️",name:"THE SCALE",         desc:"Exactly 0 reputation at rank 7+. The grid has no idea what you are. Neither do we.",                                  secret:true, reward:{credits:250} },
+  welcome:      { id:"welcome",      icon:"🖥️",  name:"WELCOME TO THE GRID",        secret:false, desc:"You're here. The grid noticed. It wasn't impressed. It's been running for three million years and has seen everything. It gives you a week.",                                                                                                                                                          reward:{credits:50,turns:1} },
+  first_blood:  { id:"first_blood",  icon:"🩸",  name:"FIRST BLOOD",                secret:false, desc:"You flatlined something weaker than you. The grid is impressed. It isn't. Static played a little fanfare. It was three seconds long. Nobody heard it. You deserved it anyway.",                                                                                                                       reward:{credits:100} },
+  kill_10:      { id:"kill_10",      icon:"💀",  name:"GETTING WARMED UP",           secret:false, desc:"10 kills. You've graduated from 'accidental threat' to 'minor inconvenience.' The corp has updated your file. Dave reviewed it. Dave closed it as User Error. Dave seems fine.",                                                                                                                     reward:{credits:150} },
+  kill_50:      { id:"kill_50",      icon:"☠️",  name:"KILL THEM ALL",               secret:false, desc:"50 kills. The bodies are stacking up. The grid has given you a nickname. It's not flattering. The corp has upgraded your threat level. Dave filed a report. Dave closed it as User Error. Dave is starting to see a pattern.",                                                                       reward:{credits:300} },
+  kill_100:     { id:"kill_100",     icon:"🏭",  name:"TRIPLE DIGITS",               secret:false, desc:"100 kills. The Megacorp AI has created a dedicated file for you. It's 847 pages long. Dave closed it as User Error. The AI filed a complaint about Dave. Dave closed that too. Dave is having a productive day.",                                                                                    reward:{credits:500} },
+  glass_cannon: { id:"glass_cannon", icon:"💥",  name:"GLASS CANNON",                secret:false, desc:"Won a fight at under 5% HP. The crowd went feral. Static played your theme music. It was dramatic. You deserved it. Don't make it weird. You're making it weird. Stop. No — keep going. You earned weird.",                                                                                        reward:{credits:200,turns:2} },
+  first_death:  { id:"first_death",  icon:"📉",  name:"FREQUENT DIER (FIRST STEPS)", secret:false, desc:"You flatlined for the first time. Welcome to the club. The grid has a light on for you now. Come back when you're ready. Static saved your spot.",                                                                                                                                                 reward:{credits:25} },
+  die_10:       { id:"die_10",       icon:"😵",  name:"FREQUENT DIER",               secret:false, desc:"Flatlined 10 times. You are statistically more dead than alive. The grid has started leaving a light on for you. Static plays something when you arrive. He doesn't do that for most people. We're not going to make a big deal of this. It's a big deal.",                                         reward:{credits:50} },
+  the_turtle:   { id:"the_turtle",   icon:"🐢",  name:"THE TURTLE",                  secret:false, desc:"Fled from 5 fights in a row. Smoke me a kipper. I'll be back for breakfast. You won't be back for breakfast. You're already in the next sector. Running. The grid respects this. The grid doesn't say so.",                                                                                        reward:{credits:75} },
+  the_rimmer:   { id:"the_rimmer",   icon:"📋",  name:"THE RIMMER MANEUVER",         secret:true,  desc:"Fled from 10 consecutive fights without a single win. Arnold Judas Rimmer would be proud. He wouldn't say so. He would file a 47-page report about it. Nobody would read it. Dave would close it as User Error. Discretion is a valid strategy. Rimmer is not here. You are. That counts.",       reward:{credits:100} },
+  first_pvp:    { id:"first_pvp",    icon:"⚔️",  name:"FIRST BLOOD (PVP)",           secret:false, desc:"Your first PvP kill. A real runner. A real person. The Dead Drop noticed. So did Static. So did the runner you flatlined. They filed a bounty. Dave closed it as User Error. Dave seems conflicted.",                                                                                               reward:{credits:150} },
+  pvp_10:       { id:"pvp_10",       icon:"🎯",  name:"RUNNER HUNTER",               secret:false, desc:"10 PvP kills. You have become the thing new runners are warned about. The grid is neutral on this. Lyra is not neutral on this. Lyra hasn't said anything. Lyra's silence is loud.",                                                                                                               reward:{credits:400} },
+  punching_up:  { id:"punching_up",  icon:"👊",  name:"PUNCHING UP",                 secret:false, desc:"Defeated a runner 3+ levels above you. The grid did not see that coming. Neither did they. Static dedicated a full broadcast to this. It was four minutes long. The runner you beat was listening.",                                                                                                reward:{credits:250} },
+  landlord:     { id:"landlord",     icon:"🏠",  name:"LANDLORD",                    secret:false, desc:"Raided someone with under 100 credits. They had nothing. You took it anyway. The grid has assigned you a new title. It's not flattering. Dave filed a complaint on their behalf. Dave closed it as User Error. Dave seems conflicted.",                                                               reward:{credits:0} },
+  generous:     { id:"generous",     icon:"💚",  name:"LOAN SHARK",                  secret:false, desc:"Sent your first care package. You didn't have to do that. Nothing required it. The grid noticed. It doesn't always. This time it did. The runner you helped doesn't know your name yet. They will. The Dead Drop remembers everything.",                                                             reward:{credits:100,rep:5} },
+  saint:        { id:"saint",        icon:"😇",  name:"MAKING FRIENDS",              secret:false, desc:"Left messages on 5 different runner profiles. You talked to people. On purpose. More than once. The grid is relieved. Static is relieved. Lyra poured you something without being asked. Nobody said anything. That was the right call.",                                                            reward:{credits:200,rep:10} },
+  streak_7:     { id:"streak_7",     icon:"🔥",  name:"TOUCHED GRASS",               secret:false, desc:"7-day login streak. We're worried about you. Have you eaten? Static says you look pale. Static cannot actually see you. Static is probably right. The grid will be here tomorrow. So will the grass. Allegedly.",                                                                                   reward:{credits:200,turns:3} },
+  streak_14:    { id:"streak_14",    icon:"🌋",  name:"WHAT IS OUTSIDE",             secret:false, desc:"14-day login streak. The grid is your home now. This is not a compliment. Holly would tell you to go outside. Holly also hasn't been outside in three million years. Make of that what you will. We're very comfortable in here.",                                                                  reward:{credits:400,turns:5} },
+  streak_30:    { id:"streak_30",    icon:"👁️",  name:"ONE OF US",                   secret:false, desc:"30-day login streak. You are the grid now. The grid is you. The Megacorp AI has added you to a special list. Dave reviewed the list. Dave closed it as User Error. Dave is on the list. Dave doesn't know.",                                                                                      reward:{credits:1000,turns:10} },
+  boss_kill:    { id:"boss_kill",    icon:"🏆",  name:"BOSS MODE",                   secret:false, desc:"Your first boss kill. The grid shook a little. Static played something enormous. The Megacorp AI updated your threat level to 'significant.' Dave reviewed it. Dave closed it as User Error. Dave is starting to worry about Dave.",                                                                 reward:{credits:500,turns:5} },
+  lone_wolf:    { id:"lone_wolf",    icon:"🐺",  name:"LONE WOLF",                   secret:false, desc:"Reached level 5 with no faction. No faction. No crew. Just you and the grid. Cipher Syndicate messaged you. You didn't reply. Ghost Protocol messaged you. You didn't reply. Ghost Protocol appreciated this more than you know.",                                                                  reward:{credits:300} },
+  lyra_fan:     { id:"lyra_fan",     icon:"💜",  name:"REGULAR",                     secret:false, desc:"Visited Lyra's bar 10 times. She knows your order. She knew it by visit three. She didn't say anything. She just poured it. That's the whole thing. That's the entire achievement. You're a regular now. The grid has worse fates.",                                                               reward:{credits:150,rep:5} },
+  lyra_married: { id:"lyra_married", icon:"💍",  name:"OFF THE MARKET",              secret:false, desc:"You proposed to Lyra. Lyra said yes. Grunt said nothing. His silence spoke volumes. Static played something. Nobody agreed on what was appropriate. Static went with jazz. Dave attended the reception. Nobody knew Dave was coming. The gift was appropriate. Dave contains multitudes.",            reward:{credits:500,rep:20} },
+  skill_maxed:  { id:"skill_maxed",  icon:"⚡",  name:"COMPLETIONIST",               secret:false, desc:"All 5 OffOps cleared. All five. You have a problem. It's a good problem. Static dedicated a broadcast to you. It was twelve minutes long. Nobody else understood why. You do. That's the whole point.",                                                                                             reward:{credits:1000,turns:10} },
+  coffee:       { id:"coffee",       icon:"☕",  name:"THE COFFEE MACHINE",          secret:true,  desc:"You found it. It was on the 7th floor. Then the 4th floor. Now it's here. Nobody moved it. It's simply here now. The coffee is perfect. You don't know how. Neither does the coffee machine. But it knew you needed it. Dave filed a ticket about it. Dave got a coffee. Dave seems better.",      reward:{credits:200,turns:2} },
+  ed_grimley:   { id:"ed_grimley",   icon:"🕛",  name:"THE ED GRIMLEY",              secret:true,  desc:"You logged in at exactly midnight. This is statistically improbable. The grid noticed. Static noticed. The Megacorp AI added it to your file under 'suspicious behavior — possible temporal awareness.' You are, I must say, totally mental. The grid means this as a compliment.",                 reward:{credits:150} },
+  tos:          { id:"tos",          icon:"📜",  name:"TERMS AND CONDITIONS APPLY",  secret:true,  desc:"You read the entire 847-page Terms of Service. You are the first runner to do this. Legal is surprised. Dave has read it twice. Dave closed it as User Error both times. Check your Archive. Something is waiting for you there. You read 847 pages. You can handle a little mystery.",             reward:{credits:500,turns:5} },
+  dave:         { id:"dave",         icon:"🖨️",  name:"DAVE WOULD BE PROUD",         secret:true,  desc:"Completed 10 grid runs without finishing a single objective. You completed nothing. Ten times. In a row. 'User Error,' you tell yourself. 'User Error,' Dave agrees, somewhere, for reasons unrelated to you. But the timing felt meaningful. The grid has no comment. Static played a shrug.",    reward:{credits:100} },
 };
 
 function checkAchievements(player, context = {}) {
@@ -3825,7 +3823,18 @@ export default function Netrunner() {
       p = { ...p, deaths: (p.deaths||0) + 1 };
       p = unlockAchievements(p, { firstDeath: (p.deaths||0) === 1 });
       save(p);
-      await narrate(`${p.name} was flatlined by ${lastEnemy.name}. Their signal went dark. 2 dramatic sentences.`);
+      const rareFlats = [
+        "// SIGTERM received.\n// Cause of death: " + lastEnemy.name + ".\n// We're going to need a moment.\n// The grid is taking a moment.\n// Static played something.\n// It was more respectful than the situation warranted.",
+        "// You have been flatlined.\n// The grid isn't judging you.\n// Static is judging you a little.\n// Static says he isn't.\n// Static is lying.\n// Come back tomorrow.\n// The grid will pretend this didn't happen.\n// Static will not.",
+        "// FLATLINE CONFIRMED.\n// The Megacorp AI logged this incident.\n// The log reads: Runner failed. Dave has been notified.\n// Dave closed it as User Error.\n// You were the User Error.\n// Dave means this kindly.\n// Get back out there.",
+        "// Signal lost.\n//\n// Holly here. IQ of 6000, me.\n// Just wanted to say — that was rough.\n// Three million years of runs. That one was rough.\n//\n// Come back when you're ready. I'll be here.\n// Right. Back to the music.",
+        "// You have been flatlined by a " + lastEnemy.name + ".\n// It filed a report. 12 pages. It included a diagram.\n// Dave closed it as User Error.\n// The " + lastEnemy.name + " was not pleased.\n// Dave is having a productive day.\n// You are not.\n// Come back tomorrow.",
+      ];
+      if (Math.random() < 0.02) {
+        setNarration(rareFlats[Math.floor(Math.random() * rareFlats.length)]);
+      } else {
+        await narrate(p.name + ' was flatlined by ' + lastEnemy.name + '. Their signal went dark. 2 dramatic sentences.');
+      }
       handleSubmitScore(p);
     }
     if (leveled) postSystemMessage(`◈ ${p.name} reached RANK ${p.level} on the grid`);
@@ -4499,10 +4508,22 @@ export default function Netrunner() {
     const nextEnemy = getEnemyForLevel(player.level);
     const p = { ...player, credits: player.credits - 20, scoutedEnemy: nextEnemy.name };
     save(p);
+    // 5% chance of rare Static broadcast
+    const rareStaticMsgs = [
+      "I've just had a thought. No wait. It's gone. It was a good one too. Something about the corp. Or sandwiches. Probably both. Anyway — " + nextEnemy.name + " spotted on the grid. Stay sharp.",
+      "Someone asked me today if I get lonely. I've been thinking about it for six hours. The answer is: occasionally. Not often. The grid is good company. You are good company. Also — " + nextEnemy.name + " is out there. Watch yourself.",
+      "The coffee machine is in sector 4 today. I didn't move it. Nobody moved it. It's just there. The coffee is very good. Also there's a " + nextEnemy.name + " on the grid. Priorities.",
+      "I played your song today. While you were gone. Nobody else knew it was yours. I did. Also — " + nextEnemy.name + " spotted. Don't get flatlined. I'd have to play something sad.",
+      "The grid has been quiet today. Too quiet. The kind of quiet that means something is about to happen. That something is probably a " + nextEnemy.name + ". It always is.",
+    ];
+    if (Math.random() < 0.05) {
+      setNarration("// STATIC BROADCAST\n// " + rareStaticMsgs[Math.floor(Math.random() * rareStaticMsgs.length)]);
+      return;
+    }
     // 30% chance to inject a collective clue for eligible non-members
     const clueInjection = getStaticClueInjection();
     if (clueInjection && !player.inCollective && player.level >= 3) {
-      await npcSay("static", `Static the glitched AI DJ whispers to ${player.name}: ${clueInjection} Then adds intel about a ${nextEnemy.name} on the grid. Keep the clue cryptic and fragmented.`);
+      await npcSay("static", "Static the glitched AI DJ whispers to " + player.name + ": " + clueInjection + " Then adds intel about a " + nextEnemy.name + " on the grid. Keep the clue cryptic and fragmented.");
     } else {
       await npcSay("static", `Static the glitched AI DJ whispers intel to ${player.name} about a ${nextEnemy.name} lurking on the grid. Describe this in 2 fragmented, cryptic sentences — music metaphors, glitchy speech.`);
     }
@@ -4977,6 +4998,39 @@ export default function Netrunner() {
         <AnsiGrid rows={HEADERS.market} scale={1.0} />
         <div className="panel">
           <div className="panel-title">// BLACK MARKET</div>
+          {/* Rare absurd items — 30% chance per visit */}
+          {Math.random() < 0.30 && (() => {
+            const rareItems = [
+              { name: "DAVE'S LUNCH (TUNA, 2019)", icon: "🥪", price: 15, effect: "+10 HP", desc: "Nobody knows how it got here. Nobody is asking. The sandwich has seen things. You can feel it judging you. It's not wrong.", id: "daves_lunch" },
+              { name: "CORP MOTIVATIONAL POSTER", icon: "📋", price: 5,  effect: "+2 REP", desc: '"THERE IS NO I IN TEAM." There is also no I in Corp Proxy but one of them will still flatline you. No practical effect. The grid finds this as confusing as you do.', id: "corp_poster" },
+              { name: "STATIC'S MIXTAPE VOL. 847", icon: "📼", price: 30, effect: "RANDOM BUFF", desc: "Compiled over three million years. Track listing: classified. Could be anything. Static considers this a feature. Static is correct.", id: "static_tape" },
+              { name: "PENLEY-MORRISON TERMS OF SERVICE", icon: "📜", price: 0, effect: "UNKNOWN", desc: "847 pages. Nobody has read it. You could be the first. Dave approved it twice. Dave seems fine. This should worry you more than it does.", id: "tos_item" },
+              { name: "GRUNT'S RECOMMENDATION", icon: "🥃", price: 20, effect: "FULL HP", desc: "He didn't say why. He didn't say anything. He just slid it across the bar and looked at the floor. It's exactly what you needed. You don't know how he knew. Neither does he.", id: "grunt_rec" },
+            ];
+            const item = rareItems[Math.floor(Math.random() * rareItems.length)];
+            return (
+              <div style={{border:"1px solid #333",borderRadius:4,padding:12,marginBottom:12,background:"rgba(255,85,255,0.03)"}}>
+                <div style={{color:"#ff55ff",fontSize:10,letterSpacing:".1em",marginBottom:6}}>// RARE ITEM — APPEARS BRIEFLY</div>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:8}}>
+                  <div>
+                    <div style={{color:"#ffffff",fontSize:12,fontWeight:700,marginBottom:4}}>{item.icon} {item.name}</div>
+                    <div style={{color:"#555",fontSize:11,lineHeight:1.6,marginBottom:6}}>{item.desc}</div>
+                    <div style={{color:"#55ffff",fontSize:11}}>Effect: {item.effect}</div>
+                  </div>
+                  <button className="btn" style={{flexShrink:0,fontSize:11,borderColor:"#ff55ff",color:"#ff55ff"}}
+                    onClick={() => {
+                      if (player.credits < item.price) { setNarration("// Insufficient credits."); return; }
+                      const effects = { daves_lunch: {hp: Math.min(player.hp+10, player.maxHp)}, grunt_rec: {hp: player.maxHp}, corp_poster: {rep:(player.rep||0)+2}, static_tape: {nextFightBuff:{type:["atk","def","hp"][Math.floor(Math.random()*3)],val:10}}, tos_item: {} };
+                      const p = {...player, credits: player.credits - item.price, ...(effects[item.id]||{})};
+                      save(p); setPlayer(p);
+                      setNarration("// " + item.name + " acquired.\n// " + item.desc.split(".")[0] + ".");
+                    }}>
+                    {item.price === 0 ? "FREE" : "₡" + item.price}
+                  </button>
+                </div>
+              </div>
+            );
+          })()}
           {GEAR.map(gear => {
             const owned = player.gear.includes(gear.id);
             const discount = player._shopDiscount || 0;
@@ -6535,9 +6589,24 @@ export default function Netrunner() {
             <div style={{ border: "1px solid var(--cyan)", padding: 14, borderRadius: 2, background: "rgba(0,229,255,.04)", marginBottom: 12 }}>
               <div style={{ fontFamily: "Orbitron", fontSize: 11, color: "var(--cyan)", letterSpacing: ".2em", marginBottom: 8 }}>◈ SAFE MODE — ₡{SAFEMODE_COST}</div>
               <div className="dim" style={{ lineHeight: 1.8 }}>
-                Go fully dark. Encrypt your location, restore full integrity, clear all status effects.<br />
-                <span style={{ color: "var(--cyan)" }}>PvP shield active for {SAFEMODE_HOURS} hours.</span> No runner can touch you while you're under.<br />
-                You can still dive into the grid while in safe mode.
+                {Math.random() < 0.05 ? (
+                  <span style={{color:"#336633",fontStyle:"italic"}}>
+                    This room has been inspected and certified safe by the Penley-Morrison Corporation Department of Runner Safety and Wellness.<br/><br/>
+                    The Department of Runner Safety and Wellness was dissolved in 2019.<br/><br/>
+                    This certification has not been updated.<br/><br/>
+                    You are probably fine. We are legally required to say "probably."<br/><br/>
+                    Have a nice stay. — The Management<br/>
+                    (The Management is no longer available. Please contact Dave.)<br/>
+                    (Dave is not available.)<br/>
+                    (This is the system working as intended.)
+                  </span>
+                ) : (
+                  <>
+                    Go fully dark. Encrypt your location, restore full integrity, clear all status effects.<br />
+                    <span style={{ color: "var(--cyan)" }}>PvP shield active for {SAFEMODE_HOURS} hours.</span> No runner can touch you while you're under.<br />
+                    You can still dive into the grid while in safe mode.
+                  </>
+                )}
               </div>
             </div>
             {safeActive ? (
@@ -6558,6 +6627,23 @@ export default function Netrunner() {
           <div>
             <img src="/images/npcs/deaddrop_web.png" alt="Dead Drop"
               style={{width:"100%",maxHeight:200,objectFit:"cover",borderRadius:4,marginBottom:12}} />
+            {/* Rare Dead Drop system message — 5% chance */}
+            {Math.random() < 0.05 && (() => {
+              const rareMsgs = [
+                "// GRID OBSERVATION\n// Two runners raided each other today. Both lost credits. Both filed bounties. Both ended up in the same OffOp sector.\n// Static played Yakety Sax. Nobody asked for that. Static did it anyway. Static stands by this decision.",
+                "// TRANSMISSION — SOURCE: UNKNOWN\n// Has anyone else noticed the coffee machine?\n// It was on the 7th floor. Now it's in the grid.\n// I'm not saying anything. I'm just noting it. For the record.\n// [this message has been archived] [the coffee machine has been notified] [the coffee machine did not respond]",
+                "// FROM: DAVE\n// Hello. I don't usually post here. I just wanted to say — I see what you're all doing out there. I've seen it for a long time.\n// I close the tickets. I know.\n// Keep going.\n// — Dave\n// [this message has been filed as User Error] [Dave filed it himself] [Dave seems okay]",
+                "// GRID OBSERVATION\n// A runner hit Safe Mode at 3:47 AM.\n// The grid noted the timestamp.\n// Static noted the timestamp.\n// Nobody said anything.\n// Some things don't need to be said.",
+              ];
+              const msg = rareMsgs[Math.floor(Math.random() * rareMsgs.length)];
+              return (
+                <div style={{border:"1px solid #1a2a1a",borderRadius:4,padding:10,marginBottom:12,background:"rgba(85,255,85,0.02)"}}>
+                  {msg.split("\n").map((line, i) => (
+                    <div key={i} style={{color:"#2a4a2a",fontSize:11,fontStyle:"italic",lineHeight:1.8}}>{line}</div>
+                  ))}
+                </div>
+              );
+            })()}
             <div className="flex-between mb-8">
               <div className="dim" style={{lineHeight:1.6}}>
                 Encrypted relay. All runners see this feed.<br/>
