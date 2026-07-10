@@ -14,6 +14,48 @@ A free, open source, browser-based multiplayer RPG inspired by BBS door games of
 
 ## The World
 
+![SIGTERM](http://alpha.blipsandbloops.com:3000/images/npcs/sigterm_logo_web.png)
+
+The Penley-Morrison Corporation owns the internet. 94% of it anyway.
+
+The other 6% is yours.
+
+*Before the grid. Before the runners. Before everything.*
+
+![Catherine](http://alpha.blipsandbloops.com:3000/images/npcs/catherine_web.png)
+
+A network technician named Catherine got laid off at 3:47 AM via automated email. She jacked in angry. She never logged out. Nobody knows what she found. The Megacorp AI has been looking for her signal every 0.003 seconds for three million years. Dave from IT closed all the tickets as User Error.
+
+---
+
+## The Neon Refuge
+
+![Lyra](http://alpha.blipsandbloops.com:3000/images/npcs/lyra_fill_web.png)
+
+There's a bar in the 6%. The bartender is called Lyra. She's been there three million years. She remembers your order. She knows things she shouldn't. She'll say something true at exactly the right moment and then pretend she didn't.
+
+The grid has factions. OffOps against corp infrastructure. A Public Vault that fills all season and pays out when someone finally defeats the Megacorp AI. A Dead Drop where the community lives. Runner obituaries. Care packages from veterans to newcomers.
+
+A season that ends when a human being does something hard enough to end it.
+
+**The corp built the grid. Come take your piece.**
+
+**[Jack in now →](http://alpha.blipsandbloops.com:3000)**igterm_logo_web.png)
+
+# SIGTERM
+
+
+
+> They built it. We broke in. Now we live here.
+
+A free, open source, browser-based multiplayer RPG inspired by BBS door games of the 1980s. No install required to play. Real players. Play for 10 minutes or lose an entire evening.
+
+**[Play now at alpha.blipsandbloops.com:3000](http://alpha.blipsandbloops.com:3000)**
+
+---
+
+## The World
+
 Three million years ago, the Penley-Morrison Corporation built the grid to connect humanity.
 
 What they built was a cage with very good wifi.
