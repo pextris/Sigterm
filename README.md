@@ -1,6 +1,6 @@
 # SIGTERM
 
-![SIGTERM](http://alpha.blipsandbloops.com:3000/images/npcs/lyra_fill_web.png)
+![SIGTERM](http://alpha.blipsandbloops.com:3000/images/npcs/sigterm_logo_web.png)
 
 > They built it. We broke in. Now we live here.
 
