@@ -4541,8 +4541,12 @@ export default function Netrunner() {
   const renderTitle = () => (
     <div className="title-screen">
 
-      {/* SIGTERM ASCII Logo */}
-      <pre style={{color:"#55ff55",fontSize:"clamp(5px,0.95vw,10px)",lineHeight:1.3,marginBottom:12,textAlign:"center"}}>{`██████  ██▓  ▄████ ▄▄▄█████▓▓█████  ██▀███   ███▄ ▄███▓
+      {/* SIGTERM Logo - random on each load */}
+      {Math.random() > 0.5 ? (
+        <img src="/images/npcs/sigterm_logo_web.png" alt="SIGTERM"
+          style={{maxWidth:"80%",maxHeight:180,objectFit:"contain",marginBottom:12,display:"block",margin:"0 auto 12px"}} />
+      ) : (
+        <pre style={{color:"#55ff55",fontSize:"clamp(5px,0.95vw,10px)",lineHeight:1.3,marginBottom:12,textAlign:"center"}}>{`██████  ██▓  ▄████ ▄▄▄█████▓▓█████  ██▀███   ███▄ ▄███▓
 ▒██    ▒ ▓██▒ ██▒ ▀█▒▓  ██▒ ▓▒▓██   ▀ ▓██ ▒ ██▒▓██▒▀█▀ ██▒
 ░ ▓██▄   ▒██▒▒██░▄▄▄░▒ ▓██░ ▒░▒███   ▓██ ░▄█ ▒▓██    ▓██░
   ▒   ██▒░██░░▓██  ██▓░ ▓██▓ ░ ▒▓██  ▄ ▒██▀▀█▄  ▒██    ▒██ 
@@ -4551,6 +4555,7 @@ export default function Netrunner() {
 ░ ░▒  ░ ░ ▒ ░  ░   ░     ░     ░ ░  ░  ░▒ ░ ▒░░  ░      ░
 ░  ░  ░   ▒ ░░▒ ░   ░   ░         ░     ░░   ░ ░      ░   
       ░   ░        ░             ░  ░   ░            ░`}</pre>
+      )}
 
       {/* Tagline */}
       <div style={{color:"#55ffff",fontSize:13,letterSpacing:".2em",marginBottom:24}}>
