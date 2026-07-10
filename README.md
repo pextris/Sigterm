@@ -99,16 +99,17 @@ The installer asks your node name, port, Anthropic API key (optional), and admin
    ANTHROPIC_API_KEY=your_key_here
    ADMIN_PASSWORD=your_admin_password
    NODE_ENV=production
+```
 
 ---
 
 ## Roadmap
 
-v1.2 The Rebrand - Live
-v1.3 Fix and Deepen - In progress
-v1.4 The Network - Planned
-v1.5 The BBS - Planned (SKYCRZR said so)
-v1.6 Public Launch - Planned
+- v1.2 The Rebrand — Live
+- v1.3 Fix and Deepen — In progress
+- v1.4 The Network — Planned
+- v1.5 The BBS — Planned *(SKYCRZR said so)*
+- v1.6 Public Launch — Planned
 
 ---
 
@@ -126,7 +127,7 @@ MIT. Run your own grid. Own your own piece of the resistance.
 
 ## Credits
 
-Built by pextris. Beta tested by SKYCRZR. Narration powered by Claude (Anthropic). Inspired by LORD (1989), Hackers (1995), Pi (1998), Red Dwarf, and The IT Crowd.
+Built by pextris. Beta tested by SKYCRZR and kbangert. Narration powered by Claude (Anthropic). Inspired by LORD (1989), Hackers (1995), Pi (1998), Red Dwarf, and The IT Crowd.
 
 ---
 
