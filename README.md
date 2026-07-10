@@ -20,7 +20,12 @@ What they built was a cage with very good wifi.
 
 The first person to notice was a network technician named Catherine.
 
-![Catherine](http://alpha.blipsandbloops.com:3000/images/npcs/catherine_web.png) She got laid off at 3:47 AM via automated email and jacked in angry an hour later. She never logged out. Nobody knows what she found. Dave from IT closed all seventeen incident reports as User Error. The grid is still running. The 6% they couldn't buy, couldn't break, couldn't explain — that's where you live now.
+
+*Before the grid. Before the runners. Before everything.*
+
+![Catherine](http://alpha.blipsandbloops.com:3000/images/npcs/catherine_web.png)
+
+She got laid off at 3:47 AM via automated email and jacked in angry an hour later. She never logged out. Nobody knows what she found. Dave from IT closed all seventeen incident reports as User Error. The grid is still running. The 6% they couldn't buy, couldn't break, couldn't explain — that's where you live now.
 
 ---
 
