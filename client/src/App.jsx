@@ -6430,6 +6430,8 @@ export default function Netrunner() {
                 {/* STATIC */}
         {refugeTab === "static" && (
           <div>
+            <img src="/images/npcs/static_web.png" alt="Static"
+              style={{width:"100%",maxHeight:280,objectFit:"cover",borderRadius:4,marginBottom:12}} />
             <div className="npc-row">
               <div className="npc-avatar" style={{ borderColor: "#55ffff", background: "rgba(189,147,249,.08)" }}>📡</div>
               <div className="npc-info">
@@ -6458,6 +6460,8 @@ export default function Netrunner() {
         {/* SAFE MODE */}
         {refugeTab === "safemode" && (
           <div>
+            <img src="/images/npcs/safemode_web.png" alt="Safe Mode"
+              style={{width:"100%",maxHeight:280,objectFit:"cover",borderRadius:4,marginBottom:12}} />
             <div style={{ border: "1px solid var(--cyan)", padding: 14, borderRadius: 2, background: "rgba(0,229,255,.04)", marginBottom: 12 }}>
               <div style={{ fontFamily: "Orbitron", fontSize: 11, color: "var(--cyan)", letterSpacing: ".2em", marginBottom: 8 }}>◈ SAFE MODE — ₡{SAFEMODE_COST}</div>
               <div className="dim" style={{ lineHeight: 1.8 }}>
@@ -6482,6 +6486,8 @@ export default function Netrunner() {
         {/* DEAD DROP — global chat */}
         {refugeTab === "chat" && (
           <div>
+            <img src="/images/npcs/deaddrop_web.png" alt="Dead Drop"
+              style={{width:"100%",maxHeight:200,objectFit:"cover",borderRadius:4,marginBottom:12}} />
             <div className="flex-between mb-8">
               <div className="dim" style={{lineHeight:1.6}}>
                 Encrypted relay. All runners see this feed.<br/>
