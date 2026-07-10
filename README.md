@@ -43,6 +43,8 @@ There's a bar in the 6%. The bartender is called Lyra. She's been there three mi
 
 **The Public Vault** — A transparent credit pool that fills all season from player activity. When the season ends it pays out. Everyone can see it. Nobody can just take it.
 
+**The Council** — The top 10 runners on the leaderboard form The Council. Once a week they vote on what happens next in the story. New hidden exits. Archive entries. Grid-wide events. Everyone can watch. Only the top 10 can vote. The lore is written by the players who survived long enough to matter.
+
 **The Season** — No timer. The season ends when a runner defeats the Megacorp AI — which gets harder every time someone fails. The runner who ends it is written into the Archive permanently.
 
 **Factions** — Join Deadlock, Cipher Syndicate, or Ghost Protocol. Each has its own ideology, playstyle, and rewards. Faction wars happen. Sides matter.
