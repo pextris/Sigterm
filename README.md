@@ -101,3 +101,13 @@ We're actively looking for beta testers. Join the Discord:
 **[Join the SIGTERM Discord](https://discord.gg/DUnGQkhfu)**
 
 Report bugs, share feedback, and jack in with the crew.
+
+---
+
+## Beta Testing
+
+We're actively looking for beta testers. Join the Discord:
+
+**[Join the SIGTERM Discord](https://discord.gg/DUnGQkhfu)**
+
+Report bugs, share feedback, and jack in with the crew.
