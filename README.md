@@ -53,17 +53,17 @@ There's a bar in the 6%. The bartender is called Lyra. Chrome arm. Circuit lines
 
 ---
 
-## The Bard System
+## The Sysop System
 
-Every node has a Bard. One voice the grid amplifies above all others.
+Every node has a Sysop. One voice the grid amplifies above all others.
 
 On the mothership that is pextris. The one who built it. Still here. Still running.
 
-When you self-host your own node you become the Bard of your grid. You choose up to three Trusted runners who carry your authority. You set the tone. You write the transmissions. You build the culture.
+When you self-host your own node you become the Sysop of your grid. You choose up to three Trusted runners who carry your authority. You set the tone. You write the transmissions. You build the culture.
 
-The Bard's messages appear in the Dead Drop in a color nobody else gets. Lyra knows their order before they sit down. Static plays their song on login without being asked.
+The Sysop's messages appear in the Dead Drop in a color nobody else gets. Lyra knows their order before they sit down. Static plays their song on login without being asked.
 
-Every node is its own small world. Every Bard is its own Seth Able. The grid is a federation. Each node has its own mythology. All of them share the same Archive, the same season, the same signal transmitting somewhere in the deep grid.
+Every node is its own small world. Every Sysop is its own Seth Able. The grid is a federation. Each node has its own mythology. All of them share the same Archive, the same season, the same signal transmitting somewhere in the deep grid.
 
 This is what BBS culture was. This is what it can be again.
 
@@ -75,7 +75,7 @@ This is what BBS culture was. This is what it can be again.
     cd Sigterm
     bash install.sh
 
-The installer asks your node name, your Bard handle, your Trusted runners, port, Anthropic API key, and admin password. Your node is live. Your mythology begins.
+The installer asks your node name, your Sysop handle, your Trusted runners, port, Anthropic API key, and admin password. Your node is live. Your mythology begins.
 
 ---
 
@@ -93,7 +93,7 @@ The installer asks your node name, your Bard handle, your Trusted runners, port,
 
 - v1.2 The Rebrand - Live
 - v1.3 Fix and Deepen - In progress
-- v1.4 The Network - Bard system, node hierarchy, cross-node play
+- v1.4 The Network - Sysop system, node hierarchy, cross-node play
 - v1.5 The BBS - ENiGMA door game integration (SKYCRZR said so)
 - v1.6 Security and Auth - MFA, account recovery
 - v1.7 Public Launch - The federation is open
@@ -114,7 +114,7 @@ MIT. Run your own grid. Own your own piece of the resistance.
 
 ## Credits
 
-Built by pextris - The Bard of the Mothership.
+Built by pextris - The Sysop of the Mothership.
 Beta tested by SKYCRZR and kbangert.
 Narration powered by Claude (Anthropic).
 Inspired by LORD (1989), Hackers (1995), Pi (1998), Red Dwarf, The IT Crowd, and every BBS sysop who kept the lights on.
@@ -127,4 +127,4 @@ Join the Discord. Jack in. Tell us what breaks.
 
 **[Join the SIGTERM Discord](https://discord.gg/DUnGQkhfu)**
 
-The grid is still there. The Bard is still running. Come find out what Catherine found.
+The grid is still there. The Sysop is still running. Come find out what Catherine found.
