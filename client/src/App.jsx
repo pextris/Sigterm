@@ -4260,7 +4260,8 @@ export default function Netrunner() {
         longestStreak: player.longestStreak||0, dungeonTitles: player.dungeonTitles||[],
         badges: player.badges||[], perks: (player.perks||[]).length, credits: player.credits,
       });
-      setProfileMsgs(await loadProfileMessages(name, cls));
+      const ownMsgs = await loadProfileMessages(name, cls);
+      setProfileMsgs(ownMsgs);
       setProfileLyra("");
       setProfileMsgInput("");
       return;
@@ -5699,9 +5700,9 @@ export default function Netrunner() {
                     placeholder="Leave a message..."
                     value={profileMsgInput} maxLength={120}
                     onChange={e => setProfileMsgInput(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handlePostProfileMsg()} />
+                    onKeyDown={e => e.key === "Enter" && handleSendProfileMsg()} />
                   <button className="btn btn-sm" style={{flexShrink:0}}
-                    onClick={handlePostProfileMsg} disabled={!profileMsgInput.trim()}>
+                    onClick={handleSendProfileMsg} disabled={!profileMsgInput.trim()}>
                     SEND
                   </button>
                 </div>
