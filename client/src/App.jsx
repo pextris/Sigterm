@@ -669,7 +669,7 @@ const DUNGEONS = [
       { name: "Server Farm",      enemyLevel: 3, creditBonus: 45,  xpBonus: 35  },
       { name: "Executive Floor",  enemyLevel: 3, creditBonus: 55,  xpBonus: 45  },
       { name: "Security Core",    enemyLevel: 4, creditBonus: 65,  xpBonus: 55  },
-      { name: "Tower Summit",     enemyLevel: 5, creditBonus: 150, xpBonus: 120, boss: true, bossName: "TOWER SENTINEL", bossItem: "ice_breaker" },
+      { name: "Tower Summit",     enemyLevel: 5, creditBonus: 150, xpBonus: 120, boss: true, bossName: "TOWER SENTINEL", bossItem: "firewall_spike" },
     ],
   },
   {
@@ -812,7 +812,7 @@ const STREAK_MILESTONES = [
   { day: 2,  label: "Day 2",  reward: { turns: 2 },                                    desc: "+2 bonus turns" },
   { day: 3,  label: "Day 3",  reward: { credits: 50 },                                 desc: "+₡50" },
   { day: 5,  label: "Day 5",  reward: { item: "stim_injector" },                       desc: "+Stim Injector" },
-  { day: 7,  label: "Day 7",  reward: { turns: 3, item: "ice_breaker", fxp: 50 },      desc: "+3 turns, ICE Breaker, 50 FXP" },
+  { day: 7,  label: "Day 7",  reward: { turns: 3, item: "firewall_spike", fxp: 50 },      desc: "+3 turns, Firewall Spike, 50 FXP" },
   { day: 14, label: "Day 14", reward: { turns: 5, item: "neural_patch", perkPoint: 1 },desc: "+5 turns, Neural Patch, Perk Point" },
   { day: 30, label: "Day 30", reward: { atk: 5, badge: "GRID_LEGEND", turns: 5 },      desc: "+5 ATK permanent, Grid Legend badge, +5 turns" },
 ];
@@ -1013,7 +1013,7 @@ const MAX_STACK = 3;
 
 // ─── CONSUMABLES ─────────────────────────────────────────────────────────────
 // use(player, combatState) → { p, combatEffect, logEntry }
-// combatEffect: { type: "atkBuff"|"defBuff"|"skipEnemy"|"iceBreakerDef", value, turns } | null
+// combatEffect: { type: "atkBuff"|"defBuff"|"skipEnemy"|"firewallSpikeDef", value, turns } | null
 
 const CONSUMABLES = {
   stim_injector: {
@@ -1037,11 +1037,11 @@ const CONSUMABLES = {
     useInHub: true, useInCombat: true,
     use: (p) => ({ p: { ...p, statusEffects: [] }, combatEffect: null, log: `[SMOKE] All status effects cleared` })
   },
-  ice_breaker: {
-    id: "ice_breaker", name: "ICE Breaker", icon: "🔓", rarity: "rare",
+  firewall_spike: {
+    id: "firewall_spike", name: "Firewall Spike", icon: "🔓", rarity: "rare",
     desc: "Halve enemy DEF for 2 rounds.", sellPrice: 40,
     useInHub: false, useInCombat: true,
-    use: (p) => ({ p, combatEffect: { type: "iceBreakerDef", value: 0.5, turns: 2 }, log: `[ICE BREAKER] Enemy DEF halved for 2 rounds` })
+    use: (p) => ({ p, combatEffect: { type: "firewallSpikeDef", value: 0.5, turns: 2 }, log: `[FIREWALL SPIKE] Enemy DEF halved for 2 rounds` })
   },
   neural_patch: {
     id: "neural_patch", name: "Neural Patch", icon: "🧠", rarity: "rare",
@@ -1073,10 +1073,10 @@ const CONSUMABLES = {
 const DROP_TABLES = {
   1: ["stim_injector", "black_market_key", "decoy_signal"],
   2: ["stim_injector", "smoke_grenade", "overclock_chip", "black_market_key", "decoy_signal"],
-  3: ["stim_injector", "smoke_grenade", "overclock_chip", "ice_breaker", "decoy_signal", "exploit_kit"],
-  4: ["overclock_chip", "ice_breaker", "neural_patch", "exploit_kit", "smoke_grenade"],
-  5: ["ice_breaker", "neural_patch", "exploit_kit", "overclock_chip"],
-  7: ["neural_patch", "exploit_kit", "ice_breaker", "overclock_chip"], // boss
+  3: ["stim_injector", "smoke_grenade", "overclock_chip", "firewall_spike", "decoy_signal", "exploit_kit"],
+  4: ["overclock_chip", "firewall_spike", "neural_patch", "exploit_kit", "smoke_grenade"],
+  5: ["firewall_spike", "neural_patch", "exploit_kit", "overclock_chip"],
+  7: ["neural_patch", "exploit_kit", "firewall_spike", "overclock_chip"], // boss
 };
 
 function rollDrop(enemyLevel, isBoss) {
@@ -1130,7 +1130,7 @@ const QUEST_POOL = [
   { id: "q_jackout",  cat: "GRID",        diff: "easy",   label: "Live to Fight",     desc: "Jack out of combat 2 times.",                 goal: 2,  stat: "jackOuts",    reward: { credits: 50,  xp: 35  } },
   // ── PVP ──
   { id: "q_pvp1",     cat: "PVP",         diff: "easy",   label: "First Strike",      desc: "Win 1 PvP fight.",                            goal: 1,  stat: "pvpWins",     reward: { credits: 80,  xp: 60  } },
-  { id: "q_pvp3",     cat: "PVP",         diff: "hard",   label: "Grid Predator",     desc: "Win 3 PvP fights in one day.",                goal: 3,  stat: "pvpWins",     reward: { credits: 200, xp: 150, item: "ice_breaker" } },
+  { id: "q_pvp3",     cat: "PVP",         diff: "hard",   label: "Grid Predator",     desc: "Win 3 PvP fights in one day.",                goal: 3,  stat: "pvpWins",     reward: { credits: 200, xp: 150, item: "firewall_spike" } },
   { id: "q_bounty1",  cat: "PVP",         diff: "medium", label: "Debt Collector",    desc: "Collect 1 bounty from your list.",            goal: 1,  stat: "bountiesCollected", reward: { credits: 150, xp: 100, item: "exploit_kit" } },
   { id: "q_pvpatt2",  cat: "PVP",         diff: "easy",   label: "Aggressor",         desc: "Attack 2 runners (win or lose).",             goal: 2,  stat: "pvpAttempts", reward: { credits: 60,  xp: 45  } },
   // ── ECONOMY ──
@@ -3607,7 +3607,7 @@ export default function Netrunner() {
 
     // ── Resolve active combat item effects ──
     const atkBuff = p.combatEffects.find(fx => fx.type === "atkBuff");
-    const iceBreakerFx = p.combatEffects.find(fx => fx.type === "iceBreakerDef");
+    const firewallSpikeFx = p.combatEffects.find(fx => fx.type === "firewallSpikeDef");
     const skipFx = p.combatEffects.find(fx => fx.type === "skipEnemy");
 
     let playerDmg = 0, newStatusOnEnemy = null;
@@ -3620,14 +3620,14 @@ export default function Netrunner() {
     } else {
       const rawAtk = calcAtk(p) + (p._rampageAtk || 0) + (atkBuff ? atkBuff.value : 0);
       let enemyDef = p._firstStrikeIgnoreDef && !p._firstStrikeDone ? 0 : calcEnemyDef(e);
-      if (iceBreakerFx) enemyDef = Math.floor(enemyDef * (1 - iceBreakerFx.value));
+      if (firewallSpikeFx) enemyDef = Math.floor(enemyDef * (1 - firewallSpikeFx.value));
       if (p._firstStrikeIgnoreDef && !p._firstStrikeDone) { p._firstStrikeDone = true; log.push({ type: "ability", text: `[DEATH MARK] First strike ignores DEF` }); }
       const wasCrit = Math.random() < calcCrit(p);
       const critMult = calcCritMult(p);
       const base = Math.max(1, rawAtk - enemyDef + Math.floor(Math.random() * 5) - 2);
       playerDmg = wasCrit ? Math.floor(base * critMult) : base;
       if (wasCrit) {
-        log.push({ type: "crit", text: `[CRIT] ${playerDmg} dmg to ${e.name}${iceBreakerFx ? " (DEF halved)" : ""}` });
+        log.push({ type: "crit", text: `[CRIT] ${playerDmg} dmg to ${e.name}${firewallSpikeFx ? " (DEF halved)" : ""}` });
         const burnVal = p._burnCritDmg || 8;
         if (p.cls === "bruteforcer") { newStatusOnEnemy = { type: "burn", turns: 2, value: burnVal }; log.push({ type: "burn", text: `[BURN] ${e.name} ignites` }); }
         if (p._cascadeCrit && Math.random() < 0.30) {
@@ -3639,7 +3639,7 @@ export default function Netrunner() {
         p.quests = advanceQuest(p.quests, "crits", 1);
         p.questStats = { ...p.questStats, crits: (p.questStats?.crits || 0) + 1 };
       } else {
-        log.push({ type: "hit", text: `[ATK] ${playerDmg} dmg to ${e.name}${iceBreakerFx ? " (DEF halved)" : ""}` });
+        log.push({ type: "hit", text: `[ATK] ${playerDmg} dmg to ${e.name}${firewallSpikeFx ? " (DEF halved)" : ""}` });
       }
       if (p.abilityCooldown > 0) p.abilityCooldown--;
     }
