@@ -879,13 +879,20 @@ function scoreValue(entry) {
 
 async function lbGet(key) {
   try {
-    const r = await window.storage.get(key, true);
-    return r ? JSON.parse(r.value) : null;
-  } catch { return null; }
+    const res = await fetch('/api/leaderboard');
+    if (res.ok) {
+      const data = await res.json();
+      if (key === 'netrunner_leaderboard') return data.entries || [];
+      if (key === 'netrunner_lb_meta') return data.meta || null;
+      if (key === 'netrunner_hall') return data.hall || [];
+    }
+  } catch {}
+  return null;
 }
 
 async function lbSet(key, val) {
-  try { await window.storage.set(key, JSON.stringify(val), true); } catch {}
+  // Server handles leaderboard persistence
+  // no-op on client
 }
 
 async function loadChat() {
@@ -927,32 +934,31 @@ async function postChatMessage(player, text, type = "player") {
 }
 
 async function postSystemMessage(text) {
-  const messages = await loadChat();
-  const msg = { id: Date.now() + Math.random(), type: "system", name: "GRID", cls: null, level: null, text, ts: Date.now() };
-  const updated = [msg, ...messages].slice(0, CHAT_MAX);
-  try { await window.storage.set(CHAT_KEY, JSON.stringify(updated), true); } catch {}
-  return updated;
+  try {
+    const token = localStorage.getItem("netrunner_token");
+    await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': 'Bearer ' + token } : {}),
+      },
+      body: JSON.stringify({
+        name: '[GRID]',
+        cls: null,
+        level: null,
+        text,
+        type: 'system',
+      }),
+    });
+  } catch(e) { console.error('System message error:', e); }
 }
 
 async function loadLeaderboard() {
-  const [entries, meta, hall] = await Promise.all([lbGet(LB_KEY), lbGet(LB_META_KEY), lbGet(HALL_KEY)]);
-  const now = Date.now();
-  // Bootstrap meta if missing
-  let m = meta || { seasonStart: now, season: 1 };
-  // Check if season has expired
-  const monthsElapsed = (now - m.seasonStart) / (1000 * 60 * 60 * 24 * 30);
-  if (monthsElapsed >= SEASON_MONTHS) {
-    // Archive top 3 to hall of fame
-    const sorted = (entries || []).sort((a, b) => scoreValue(b) - scoreValue(a));
-    const top3 = sorted.slice(0, 3);
-    const newHall = [...(hall || []), { season: m.season, date: new Date(m.seasonStart).toLocaleDateString(), winners: top3 }];
-    await lbSet(HALL_KEY, newHall);
-    await lbSet(LB_KEY, []);
-    m = { seasonStart: now, season: m.season + 1 };
-    await lbSet(LB_META_KEY, m);
-    return { entries: [], meta: m, hall: newHall };
-  }
-  return { entries: entries || [], meta: m, hall: hall || [] };
+  try {
+    const res = await fetch('/api/leaderboard');
+    if (res.ok) return await res.json();
+  } catch {}
+  return { entries: [], meta: { season: 1, weekStart: Date.now() }, hall: [] };
 }
 
 async function submitScore(player) {
@@ -2854,7 +2860,7 @@ function AnsiIntroScreen({ onDone }) {
         fontFamily: "'IBM Plex Mono',monospace", fontSize: 11,
         letterSpacing: '.12em', display: 'flex', justifyContent: 'space-between', zIndex: 4,
       }}>
-        <span>NETRUNNER v1.2</span>
+        <span>NETRUNNER v1.3</span>
         <span>[ CLICK OR PRESS ANY KEY TO CONTINUE ]</span>
       </div>
 
@@ -3702,7 +3708,7 @@ export default function Netrunner() {
       while (p.xp >= XP_PER_LEVEL(p.level)) {
         p.xp -= XP_PER_LEVEL(p.level); p.level++; p.maxHp += 15; p.hp = p.maxHp; p.atk += 2; p.def++;
         if (p.level % 2 === 0) { p.perkPoints = (p.perkPoints || 0) + 1; }
-        log.push({ type: "sys", text: `[SYS] RANK UP → ${p.level}${p.level % 2 === 0 ? " — PERK POINT EARNED" : ""}` });
+        log.push({ type: "sys", text: `[SYS] LEVEL UP → ${p.level}${p.level % 2 === 0 ? " — PERK POINT EARNED" : ""}` });
         leveled = true;
       }
       if (e.boss) p.bossDefeated = true;
@@ -3822,7 +3828,14 @@ export default function Netrunner() {
     } else {
       p = { ...p, deaths: (p.deaths||0) + 1 };
       p = unlockAchievements(p, { firstDeath: (p.deaths||0) === 1 });
+      // Lock player out until midnight
+      const now = new Date();
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0);
+      p = { ...p, lockedUntil: midnight.getTime(), turnsLeft: 0 };
       save(p);
+      // Announce death in Dead Drop
+      postSystemMessage(`◈ ${p.name} was flatlined by ${lastEnemy.name}. Signal lost.`);
       const rareFlats = [
         "// SIGTERM received.\n// Cause of death: " + lastEnemy.name + ".\n// We're going to need a moment.\n// The grid is taking a moment.\n// Static played something.\n// It was more respectful than the situation warranted.",
         "// You have been flatlined.\n// The grid isn't judging you.\n// Static is judging you a little.\n// Static says he isn't.\n// Static is lying.\n// Come back tomorrow.\n// The grid will pretend this didn't happen.\n// Static will not.",
@@ -3837,9 +3850,23 @@ export default function Netrunner() {
       }
       handleSubmitScore(p);
     }
-    if (leveled) postSystemMessage(`◈ ${p.name} reached RANK ${p.level} on the grid`);
+    if (leveled) if ([5,10,15,20,25,30].includes(p.level)) postSystemMessage(`◈ ${p.name} reached LEVEL ${p.level} on the grid`);
     if ((p.perkPoints || 0) > 0 && getAvailablePerks(p).length > 0) setShowPerkModal(true);
     setScreen("hub");
+  };
+
+  const handleHeal = () => {
+    const healCost = 10;
+    const healAmt = 20;
+    if (player.credits < healCost) { setNarration("// Insufficient credits to stabilize signal."); return; }
+    if (player.hp >= player.maxHp) { setNarration("// Integrity already at maximum."); return; }
+    const p = { ...player,
+      credits: player.credits - healCost,
+      hp: Math.min(player.hp + healAmt, player.maxHp)
+    };
+    save(p);
+    setPlayer(p);
+    setNarration(`// Signal stabilized. +${healAmt} HP. ₡${healCost} spent.`);
   };
 
   const handleJackOut = async () => {
@@ -3999,15 +4026,41 @@ export default function Netrunner() {
 
   // ── LEADERBOARD ──────────────────────────────────────────────────────────────
   const fetchLeaderboard = async () => {
+    console.log("fetchLeaderboard called, screen:", screen, "tab:", tab);
     setLbLoading(true);
-    try { setLbData(await loadLeaderboard()); } catch { setLbData({ entries: [], meta: { season: 1 }, hall: [] }); }
+    try {
+      const data = await loadLeaderboard();
+      console.log("leaderboard data:", data);
+      setLbData(data || { entries: [], meta: { season: 1, weekStart: Date.now() }, hall: [] });
+    } catch(e) {
+      console.error('Leaderboard error:', e);
+      setLbData({ entries: [], meta: { season: 1, weekStart: Date.now() }, hall: [] });
+    }
+    console.log("fetchLeaderboard done, screen:", screen);
     setLbLoading(false);
   };
 
   const handleSubmitScore = async (p) => {
-    if (scoreSubmitted) return;
-    setScoreSubmitted(true);
-    try { const sorted = await submitScore(p); setLbData(d => d ? { ...d, entries: sorted } : null); } catch {}
+    try {
+      const token = localStorage.getItem("netrunner_token");
+      await fetch('/api/leaderboard/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': 'Bearer ' + token } : {}),
+        },
+        body: JSON.stringify({
+          name: p.name,
+          cls: p.cls,
+          level: p.level,
+          kills: p.kills,
+          credits: p.credits,
+          pvpWins: p.pvpWins || 0,
+          bossDefeated: p.bossDefeated || false,
+          perks: (p.perks || []).length,
+        }),
+      });
+    } catch(e) { console.error('Score submit error:', e); }
   };
 
   // ── ACHIEVEMENTS ─────────────────────────────────────────────────────────────────
@@ -4440,6 +4493,16 @@ export default function Netrunner() {
       p = applyRatingEvent(p, "pvp_loss");
       p = checkAndShowIntervention(p);
       save(p); setPvpOutcome("lose"); setPvpLog(entries);
+      // Defender won — restore their full HP on the server
+      try {
+        const token = localStorage.getItem("netrunner_token");
+        await fetch(`/api/profiles/${encodeURIComponent(pvpTarget.handle)}/restore-hp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...(token ? { "Authorization": "Bearer " + token } : {}) },
+          body: JSON.stringify({ reason: "pvp_defense_win" }),
+        });
+      } catch(e) { console.error("HP restore error:", e); }
+      postSystemMessage(`◈ ${pvpTarget.handle} defended against ${p.name} and won. Signal fully restored.`);
       // Log failed attempt against defender
       logOfflineAttack(pvpTarget.handle, pvpTarget.cls, {
         attackerName: player.name,
@@ -4797,7 +4860,7 @@ export default function Netrunner() {
                 {cls.icon} {player.name}
               </div>
               <div style={{marginTop:4}}>
-                <span className="badge badge-green">RANK {player.level}</span>
+                <span className="badge badge-green">LEVEL {player.level}</span>
                 {player.factionId && <span style={{fontSize:12,color:FACTIONS[player.factionId]?.color,marginLeft:8}}>{FACTIONS[player.factionId]?.icon} {FACTIONS[player.factionId]?.name}</span>}
               </div>
             </div>
@@ -5074,7 +5137,7 @@ export default function Netrunner() {
           <div className="flex-between mb-8">
             <div>
               <span style={{fontSize:13,color:cls.color}}>{cls.icon} {player.name}</span>
-              <span className="badge badge-green" style={{marginLeft:8}}>RANK {player.level}</span>
+              <span className="badge badge-green" style={{marginLeft:8}}>LEVEL {player.level}</span>
             </div>
             <span className="credits">₡{player.credits}</span>
           </div>
@@ -5558,7 +5621,7 @@ export default function Netrunner() {
               {data?.bossDefeated && <span style={{color:"#ffff55",marginLeft:8,fontSize:14}}>★ MAINFRAME CRACKED</span>}
             </div>
             <div className="profile-sub">
-              {cls?.name || profileTarget.cls} · {data ? `RANK ${data.level}` : "..."}
+              {cls?.name || profileTarget.cls} · {data ? `LEVEL ${data.level}` : "..."}
               {faction && <span style={{color:faction.color,marginLeft:8}}>{faction.icon} {faction.name} [{rank?.name}]</span>}
             </div>
           </div>
@@ -5653,29 +5716,6 @@ export default function Netrunner() {
               </div>
 
            {/* Achievements */}
-           {(profileTarget?.badges||[]).length > 0 && (
-             <div style={{marginBottom:12}}>
-               <div className="profile-lyra-label" style={{marginBottom:6}}>
-                 ACHIEVEMENTS ({profileTarget.badges.length})
-               </div>
-               <div style={{display:"flex",flexDirection:"column",gap:4}}>
-                 {profileTarget.badges.map(id => {
-                   const a = ACHIEVEMENTS[id];
-                   if (!a || a.secret) return null;
-                   return (
-                     <div key={id} style={{display:"flex",gap:8,alignItems:"flex-start",padding:"4px 0",borderBottom:"1px solid #111"}}>
-                       <span style={{fontSize:16,flexShrink:0}}>{a.icon}</span>
-                       <div>
-                         <div style={{fontSize:12,color:"#ffffff",fontWeight:700}}>{a.name}</div>
-                         <div style={{fontSize:11,color:"#555",lineHeight:1.5}}>{a.desc}</div>
-                       </div>
-                     </div>
-                   );
-                 })}
-               </div>
-             </div>
-           )}
-
              {profileMsgs.length === 0 && (
                 <div className="dim">// No messages yet. Leave one below.</div>
               )}
@@ -6334,7 +6374,7 @@ export default function Netrunner() {
           {/* Level up notice */}
           {leveled && (
             <div style={{marginBottom:16,color:"#55ffff",fontSize:13,letterSpacing:".15em",padding:"8px",border:"1px solid #55ffff"}}>
-              ★ RANK UP — SYSTEM UPGRADED ★
+              ★ LEVEL UP — SYSTEM UPGRADED ★
             </div>
           )}
 
@@ -6728,7 +6768,7 @@ export default function Netrunner() {
         {/* LEADERBOARD TAB */}
         {refugeTab === "leaderboard" && (
           <div>
-            <div className="dim mb-8">Current season standings. <span style={{cursor:"pointer",color:"#55ff55",fontSize:11}} onClick={fetchLeaderboard}>↻ REFRESH</span></div>
+            <div className="dim mb-8">Current season standings. <button className="btn btn-sm" style={{marginLeft:8,fontSize:11}} onClick={e => { e.preventDefault(); e.stopPropagation(); fetchLeaderboard(); }}>↻ REFRESH</button></div>
             {lbLoading && <div className="dim" style={{padding:20,textAlign:"center"}}>//  Loading...</div>}
             {!lbLoading && !lbData && <div className="dim" style={{padding:20,textAlign:"center"}}>// <span style={{color:"#55ff55",cursor:"pointer"}} onClick={fetchLeaderboard}>Click to load leaderboard</span></div>}
             {!lbLoading && lbData && lbData.entries?.length === 0 && <div className="dim" style={{padding:20,textAlign:"center"}}>// No runners yet. Play a grid run to appear.</div>}
@@ -6737,7 +6777,7 @@ export default function Netrunner() {
                 <div className="lb-header">
                   <div>#</div><div>RUNNER</div>
                   <div style={{textAlign:"right"}}>SCORE</div>
-                  <div style={{textAlign:"right"}}>LEVEL</div>
+                  <div style={{textAlign:"right"}}>LVL</div>
                   <div style={{textAlign:"right"}}>KILLS</div>
                 </div>
                 {lbData.entries.map((e,i) => {
@@ -6746,7 +6786,7 @@ export default function Netrunner() {
                   const rowCls = isYou ? "lb-row you" : i===0?"lb-row gold":i===1?"lb-row silver":i===2?"lb-row bronze":"lb-row";
                   return (
                     <div key={i} className={rowCls}>
-                      <div className="lb-rank">{i<3?MEDALS[i]:i+1}</div>
+                      <div className="lb-rank">{i<3?["🥇","🥈","🥉"][i]:i+1}</div>
                       <div className="lb-name clickable-name" style={{color:isYou?"#fff":cls?.color}} onClick={()=>viewProfile(e.name,e.cls)}>
                         {cls?.icon} {e.name}{isYou?" (you)":""}{e.bossDefeated?" ★":""}
                       </div>
@@ -6840,8 +6880,11 @@ export default function Netrunner() {
           <button className="btn btn-danger" style={{padding:"12px 8px"}} onClick={handleJackOut} disabled={narLoading}>
             [F] FLEE
           </button>
+          <button className="btn" style={{padding:"12px 8px",borderColor:"#55ffff",color:"#55ffff"}} onClick={handleHeal} disabled={narLoading || player.credits < 10 || player.hp >= player.maxHp}>
+            [H] HEAL ₡10
+          </button>
         </div>
-        <div className="combat-action-hint">A = attack · S = special ability · F = jack out (costs 1 turn)</div>
+        <div className="combat-action-hint">A = attack · S = ability · F = flee · H = heal (₡10 / +20 HP)</div>
       </div>
     );
   };
@@ -6986,7 +7029,7 @@ export default function Netrunner() {
                 <div className="dim mt-8">{nextRank.fxpRequired-(player.factionXP||0)} FXP to {nextRank.name}</div>
               </>
             )}
-            {!nextRank && <div className="dim mt-8" style={{color:currentFaction.color}}>MAX RANK — ELITE</div>}
+            {!nextRank && <div className="dim mt-8" style={{color:currentFaction.color}}>MAX LEVEL — ELITE</div>}
           </div>
         )}
 
@@ -7121,7 +7164,7 @@ export default function Netrunner() {
     const entries = lbData?.entries || [];
     const hall = lbData?.hall || [];
     const meta = lbData?.meta;
-    const seasonStart = meta ? new Date(meta.seasonStart) : null;
+    const seasonStart = meta ? new Date(meta.weekStart || meta.seasonStart) : null;
     const seasonEnd = seasonStart ? new Date(seasonStart.getTime() + SEASON_MONTHS * 30 * 24 * 3600 * 1000) : null;
     const msLeft = seasonEnd ? seasonEnd - Date.now() : 0;
     const daysLeft = Math.max(0, Math.floor(msLeft / (1000 * 60 * 60 * 24)));
@@ -7270,7 +7313,7 @@ export default function Netrunner() {
               {isBounty && <span className="boss-tag" style={{background:"#ffff55",color:"#000"}}>BOUNTY</span>}
             </div>
             <StatBar label="INTEGRITY" value={pvpTarget.hp} max={pvpTarget.maxHp} type="hp" />
-            <div className="dim">ATK:{pvpTarget.atk} DEF:{pvpTarget.def} RANK:{pvpTarget.level}</div>
+            <div className="dim">ATK:{pvpTarget.atk} DEF:{pvpTarget.def} LEVEL:{pvpTarget.level}</div>
             <div className="dim mt-8" style={{fontStyle:"italic"}}>"{pvpTarget.taunt}"</div>
           </div>
         </div>
@@ -7345,7 +7388,7 @@ export default function Netrunner() {
           <div className="flex-between">
             <span className="dim">INTEGRITY: <span style={{ color: "var(--green)" }}>{player.hp}/{player.maxHp}</span></span>
             <span className="dim">CREDITS: <span className="credits">₡{player.credits}</span></span>
-            <span className="dim">RANK: <span style={{ color: "var(--green)" }}>{player.level}</span></span>
+            <span className="dim">LEVEL: <span style={{ color: "var(--green)" }}>{player.level}</span></span>
           </div>
           <StatusChips statuses={player.statusEffects} buff={player.nextFightBuff} />
         </div>
@@ -7515,7 +7558,7 @@ export default function Netrunner() {
               {"=".repeat(60)}
             </div>
             <div style={{color:"#55ffff",fontSize:13,letterSpacing:".15em",marginTop:3}}>
-              [ SIGTERM ] [ v1.2 ] [ THEY BUILT THE GRID. WE OWN IT. ]
+              [ SIGTERM ] [ v1.3 ] [ THEY BUILT THE GRID. WE OWN IT. ]
             </div>
             <div style={{color:"#888888",fontSize:13,letterSpacing:".2em",marginTop:2}}>
               {"=".repeat(60)}
